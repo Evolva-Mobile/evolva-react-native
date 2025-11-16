@@ -23,8 +23,23 @@ export const PostRequest = async (
         const response = await apiClient.post(finalUrl, body, { headers });
         return response.data;
 
-    } catch (error) {
-        console.error('Erro no PostRequest:', error);
-        throw error;
+    } catch (error: any) {
+        console.error("Erro no PostRequest:", error);
+
+        if (error.response && error.response.status === 500) {
+            return {
+                success: false,
+                message: "Ocorreu um erro interno no servidor. Tente novamente mais tarde."
+            };
+        }
+
+        if (error.response?.data) {
+            return error.response.data;
+        }
+
+        return {
+            success: false,
+            message: "Não foi possível processar sua requisição."
+        };
     }
 };

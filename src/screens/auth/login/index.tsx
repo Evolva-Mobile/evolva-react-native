@@ -9,9 +9,7 @@ import { Button } from '@/src/components/ui/Button';
 import { GlobalText } from '@/src/components/ui/GlobalText';
 import { USER } from '@/src/config/api-routes/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from "toastify-react-native";
-
-
+import { showToast } from '@/src/utils/toastShow';
 
 export type UserProps = {
     email: string;
@@ -28,14 +26,16 @@ export default function LoginScreen() {
     const handleSubmit = async () => {
         try {
             const response = await PostRequest(USER.LOGIN(), user)
-            if (response) {
+            if (response?.token) {
                 await AsyncStorage.setItem("@token", response.token);
                 await AsyncStorage.setItem("@user", JSON.stringify(response.user));
+                showToast.success(response.message);
                 navigation.navigate('Profile')
+                return
             }
-
+            showToast.error(response.message);
         } catch (error) {
-            console.log("Erro ao logar na conta: ", error);
+            showToast.error("Algo deu errado");
         }
     }
 

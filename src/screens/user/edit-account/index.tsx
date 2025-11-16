@@ -13,6 +13,7 @@ import { Icon } from "@/src/components/ui/Icon";
 import { colors } from "@/src/styles/theme";
 import { GetRequest } from "@/src/config/api-request/GetRequest";
 import { PatchRequest } from "@/src/config/api-request/PatchRequest";
+import { showToast } from "@/src/utils/toastShow";
 
 type userProps = {
     name: string,
@@ -44,16 +45,16 @@ export default function EditUserScreen() {
             payload.password_confirmation = user.password_confirmation;
         }
 
-        console.log("Payload:", payload);
-
         try {
             const response = await PatchRequest(USER.UPDATE('1'), payload)
             if (response) {
-                console.log("Conta editada");
+                showToast.success("Conta atualizada com sucesso!");
                 getUser();
             }
+            showToast.error(response.message || "Erro ao atualizar a conta.");
         } catch (error) {
-            console.log("erro ao criar conta: ", error);
+            console.log("Erro ao editar conta: ", error);
+            showToast.error("Ocorreu um erro inesperado.");
         }
     }
 

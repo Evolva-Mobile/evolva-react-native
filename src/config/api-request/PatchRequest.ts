@@ -21,10 +21,19 @@ export const PatchRequest = async (
     }
 
     const response = await apiClient.patch(finalUrl, body, { headers });
-    return response.data; 
-  } catch (error) {
+    return response.data;
+
+  } catch (error: any) {
     console.error("Erro no PatchRequest:", error);
+
+    if (error.response && error.response.data) {
+      return error.response.data;
+    }
+
+    if (error.response && error.response.status === 500) {
+      return { success: false, message: "Ocorreu um erro interno." };
+    }
+
     throw error;
   }
 };
-

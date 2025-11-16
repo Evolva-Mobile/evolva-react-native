@@ -14,7 +14,8 @@ type InputProps = {
 export function InputText({ label, value, onChangeText, type, icon }: InputProps) {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
-
+       
+    
     return (
         <View
             style={[

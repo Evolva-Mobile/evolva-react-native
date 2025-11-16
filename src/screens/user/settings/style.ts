@@ -4,8 +4,9 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingVertical: 24,
         paddingHorizontal: 16,
+        paddingBottom: 24,
+        paddingTop: 28,
         justifyContent: 'space-between',
     },
 
@@ -13,7 +14,7 @@ export const styles = StyleSheet.create({
         width: '100%',
         marginTop: 25,
     },
-    settingsTitleList:{
+    settingsTitleList: {
         marginBottom: 16,
         fontSize: 18,
         color: colors.neutral90,

@@ -23,8 +23,17 @@ export const GetRequest = async (
         const response = await apiClient.get(finalUrl, { headers });
         return response.data;
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Erro no GetRequest:', error);
+
+        if (error.response && error.response.data) {
+            return error.response.data;
+        }
+
+        if (error.response && error.response.status === 500) {
+            return { success: false, message: "Ocorreu um erro interno." };
+        }
+
         throw error;
     }
 };
