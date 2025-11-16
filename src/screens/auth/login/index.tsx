@@ -1,16 +1,14 @@
 import { useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-
+import { Image, TouchableOpacity, View } from 'react-native';
 import ImageLogin from "@/assets/images/principal/coin.png";
-
 import { InputText } from '@/src/components/ui/InputText';
 import { PostRequest } from '@/src/config/api-request/PostRequest';
 import { useAppNavigation } from '@/src/utils/navigation';
 import { styles } from './style';
 import { Button } from '@/src/components/ui/Button';
-import { ButtonGoogle } from '@/src/components/ui/ButtonGoogle';
 import { GlobalText } from '@/src/components/ui/GlobalText';
 import { USER } from '@/src/config/api-routes/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type UserProps = {
     email: string;
@@ -28,7 +26,9 @@ export default function LoginScreen() {
         try {
             const response = await PostRequest(USER.LOGIN(), user)
             if (response) {
-                navigation.navigate('Settings')
+                await AsyncStorage.setItem("@token", response.token);
+                await AsyncStorage.setItem("@user", JSON.stringify(response.user));
+                navigation.navigate('Profile')
             }
         } catch (error) {
             console.log("Erro ao logar na conta: ", error);

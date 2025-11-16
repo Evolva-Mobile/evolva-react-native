@@ -4,40 +4,44 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
-    },
-    containerForm: {
-        flex: 1,
+        paddingVertical: 24,
+        paddingHorizontal: 16,
         justifyContent: 'space-between',
     },
 
     containerSettings: {
-        borderRadius: 18,
-        marginTop: 25,
-        padding: 20,
-        borderWidth: 1,
-        position: "relative",
-        alignItems: "center",
-        borderColor: colors.gray60,
-    },
-    textLabel: {
-        position: "absolute",
-        top: -12,
-        left: 25,
-        paddingVertical: 2,
-        borderRadius: 8,
-        fontSize: 13,
-        paddingHorizontal: 8,
-        backgroundColor: "#FFF",
-    },
-    settingsList:{
         width: '100%',
+        marginTop: 25,
     },
-    itemList:{
+    settingsTitleList:{
+        marginBottom: 16,
+        fontSize: 18,
+        color: colors.neutral90,
+        paddingLeft: 8
+    },
+    settingsList: {
+        width: '100%',
+        borderRadius: 18,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderWidth: 2,
+        borderColor: colors.gray90,
+    },
+
+    itemList: {
         flexDirection: 'row',
         padding: 16,
-        borderBottomColor: colors.gray60,
-        borderBottomWidth: 1,
+        borderBottomColor: colors.gray90,
+        borderBottomWidth: 2,
+        justifyContent: 'space-between'
+    },
+    itemListText: {
+        color: colors.neutral90
+    },
+
+    itemListLast: {
+        flexDirection: 'row',
+        padding: 16,
         justifyContent: 'space-between'
     }
 });

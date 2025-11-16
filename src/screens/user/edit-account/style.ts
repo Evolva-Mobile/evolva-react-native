@@ -4,64 +4,54 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
-    },
-    containerForm: {
-        flex: 1,
+        paddingHorizontal: 16,
+        paddingVertical: 24,
         justifyContent: 'space-between',
     },
 
     title: {
         paddingVertical: 18,
         paddingHorizontal: 8,
-        fontSize: 28,
+        fontSize: 42,
         width: "100%",
-        textAlign: 'left',
+        textAlign: 'center',
     },
-    imgContainer: {
-        alignItems: 'center',
-        justifyContent: "center"
+
+    avatarContainer: {
+        alignItems: 'center'
     },
-    imgLogin: {
-        width: 205,
-        height: 205,
+
+    avatarImg: {
+        width: 128,
+        height: 128,
     },
+
     formUser: {
         paddingVertical: 20,
-        gap: 30,
+        gap: 20,
+        marginTop: 24,
         flexDirection: 'column'
     },
-    forgotPassword: {
-        textAlign: 'right',
-        marginTop: 16,
-        fontSize: 14,
-        paddingRight: 4,
-        color: colors.neutral80
+
+    firtsFilds: {
+        gap: 18
     },
 
-    dividerContainer: {
+    verifyPasswordContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 20,
-        width: '100%',
+        marginBottom: 25,
+        gap: 6,
+        alignItems: 'center'
     },
-    dividerText: {
-        marginHorizontal: 10,
-        fontSize: 14,
-        color: colors.neutral80
-    },
-    line: {
-        flex: 1,
-        height: 1,
-        backgroundColor: "#b9bfcb",
-    },
-    footerText: {
-        flexDirection: "row",
-        gap: 4,
-        justifyContent: "center"
-    },
-    linkFooterText: {
-        color: colors.primary
-    }
 
+    verifyPassword: {
+        color: colors.gray100,
+        fontSize: 12
+    },
+
+    footerContainer: {
+        gap: 28,
+        alignItems: "center",
+        width: "100%"
+    }
 });
