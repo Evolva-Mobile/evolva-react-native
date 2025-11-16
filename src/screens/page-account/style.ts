@@ -6,6 +6,13 @@
             flex: 1,
             padding: 16,
         },
+        contentWrapper: {
+            flex: 1,
+            justifyContent: 'space-between',
+            paddingTop: '100%',
+            paddingHorizontal: 16,
+            paddingBottom: 60
+        },
         text_title:{
             paddingVertical: 18,
             paddingHorizontal: 8,
@@ -16,8 +23,22 @@
         text_regular:{
             fontSize: 18,
             textAlign: 'center',
-            marginBottom: 20,
             width: "100%",
+        },
+        dividerContainer:{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginVertical: 20,
+        },
+        dividerLine:{
+            flex: 1,
+            height: 1,
+            backgroundColor: colors.brown90,
+        },
+        dividerText:{
+            marginHorizontal: 12,
+            fontSize: 14,
+            color: colors.gray100,
         },
 
     });

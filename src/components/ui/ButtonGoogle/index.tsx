@@ -49,7 +49,7 @@ export function ButtonGoogle() {
                 transform: [{ translateY: translate }],
                 borderBottomWidth: border
             }]}>
-                <GlobalText variant="medium" style={styles.txt}>Google</GlobalText>
+                {/* <GlobalText variant="medium" style={styles.txt}>Google</GlobalText> */}
                 <Image source={ImageGoogle} style={styles.img} />
             </Animated.View>
         </Pressable>
