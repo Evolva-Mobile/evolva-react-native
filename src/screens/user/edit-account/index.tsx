@@ -1,8 +1,7 @@
 
 import { InputText } from "@/src/components/ui/InputText";
-import { PostRequest } from "@/src/config/api-request/PostRequest";
 import { useAppNavigation } from "@/src/utils/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Image } from "react-native";
 import Img from "@/assets/images/principal/elf.png";
 import { styles } from "./style";
@@ -12,8 +11,8 @@ import { GlobalText } from "@/src/components/ui/GlobalText";
 import { HeaderBack } from "@/src/components/layout/headerBack";
 import { Icon } from "@/src/components/ui/Icon";
 import { colors } from "@/src/styles/theme";
-
-
+import { GetRequest } from "@/src/config/api-request/GetRequest";
+import { PatchRequest } from "@/src/config/api-request/PatchRequest";
 
 type userProps = {
     name: string,
@@ -32,17 +31,47 @@ export default function EditUserScreen() {
     })
 
     const handleSubmit = async () => {
-        console.log("usuario", user);
+        const payload: any = {
+            name: user.name,
+            email: user.email,
+        };
+
+        const password = user.password ?? "";
+        const password_confirmation = user.password_confirmation ?? "";
+
+        if (password !== "" && password_confirmation !== "") {
+            payload.password = user.password;
+            payload.password_confirmation = user.password_confirmation;
+        }
+
+        console.log("Payload:", payload);
+
         try {
-            const response = await PostRequest(USER.UPDATE(''), user)
-            if (response.sucess) {
-                console.log("conta criada");
-                navigation.navigate('Login')
+            const response = await PatchRequest(USER.UPDATE('1'), payload)
+            if (response) {
+                console.log("Conta editada");
+                getUser();
             }
         } catch (error) {
             console.log("erro ao criar conta: ", error);
         }
     }
+
+    const getUser = async () => {
+
+        try {
+            const response = await GetRequest(USER.GET_USER())
+            if (response) {
+                setUser(response)
+            }
+        } catch (error) {
+            console.log("erro ao criar conta: ", error);
+        }
+    }
+
+    useEffect(() => {
+        getUser()
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -64,6 +93,9 @@ export default function EditUserScreen() {
                             value={user.email}
                             onChangeText={(text) => setUser({ ...user, email: text })}
                             icon={"Mailbox"} />
+
+                        <GlobalText style={styles.verifyPassword} variant="medium">Nova senha:</GlobalText>
+
                         <InputText
                             label="Senha"
                             type="password"
@@ -95,3 +127,4 @@ export default function EditUserScreen() {
         </View>
     );
 }
+
