@@ -18,12 +18,14 @@
             paddingHorizontal: 8,
             fontSize: 45,
             width: "100%",
-            textAlign: 'center',   
+            textAlign: 'center',
+            color: colors.withe100,   
         },
         text_regular:{
             fontSize: 18,
             textAlign: 'center',
             width: "100%",
+            color: colors.withe100,
         },
         dividerContainer:{
             flexDirection: 'row',
@@ -33,12 +35,12 @@
         dividerLine:{
             flex: 1,
             height: 1,
-            backgroundColor: colors.brown90,
+            backgroundColor: colors.withe100,
         },
         dividerText:{
-            marginHorizontal: 12,
+            marginHorizontal: 8,
             fontSize: 14,
-            color: colors.gray100,
+            color: colors.withe100,
         },
 
     });
