@@ -25,6 +25,17 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Executar com Docker
+
+1. Feche qualquer instância anterior: `docker compose down` (opcional, mas recomendado).
+2. Construa a imagem: `docker compose build`
+3. Inicie o servidor Expo: `docker compose up expo`
+4. Abra o app em http://localhost:8081 (para web use `/?platform=web`).
+5. Acesse o painel DevTools em http://localhost:19002 (não é preciso usar o atalho `w`).
+6. Para encerrar, pressione `Ctrl+C` e rode `docker compose down`.
+
+> Dica (Windows/macOS): para que o Expo receba atalhos como `w`, defina `COMPOSE_INTERACTIVE_NO_CLI=1` no terminal antes de executar `docker compose up expo`.
+
 ## Get a fresh project
 
 When you're ready, run:
