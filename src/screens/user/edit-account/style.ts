@@ -19,18 +19,28 @@ export const styles = StyleSheet.create({
     },
 
     avatarContainer: {
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: "100%",
+        paddingBottom: 25,
+        borderBottomColor: colors.gray90,
+        borderBottomWidth: 2,
+        gap: 20,
     },
 
     avatarImg: {
-        width: 128,
-        height: 128,
+        width: 110,
+        height: 110,
+    },
+    actionChoice:{
+        width: 158 
     },
 
     formUser: {
         paddingVertical: 20,
         gap: 20,
-        marginTop: 24,
+        marginTop: 12,
         flexDirection: 'column'
     },
 

@@ -4,7 +4,6 @@ import { useAppNavigation } from "@/src/utils/navigation";
 import { useEffect, useState } from "react";
 import { View, Image } from "react-native";
 import Img from "@/assets/images/principal/elf.png";
-import { styles } from "./style";
 import { Button } from "@/src/components/ui/Button";
 import { USER } from "@/src/config/api-routes/user";
 import { GlobalText } from "@/src/components/ui/GlobalText";
@@ -14,6 +13,8 @@ import { colors } from "@/src/styles/theme";
 import { GetRequest } from "@/src/config/api-request/GetRequest";
 import { PatchRequest } from "@/src/config/api-request/PatchRequest";
 import { showToast } from "@/src/utils/toastShow";
+import { styles } from "./style";
+import { GlobalModal } from "@/src/components/ui/Modal";
 
 type userProps = {
     name: string,
@@ -24,6 +25,7 @@ type userProps = {
 
 export default function EditUserScreen() {
     const navigation = useAppNavigation();
+    const [visible, setVisible] = useState(false);
     const [user, setUser] = useState<userProps>({
         name: "",
         email: "",
@@ -59,7 +61,6 @@ export default function EditUserScreen() {
     }
 
     const getUser = async () => {
-
         try {
             const response = await GetRequest(USER.GET_USER())
             if (response) {
@@ -82,6 +83,10 @@ export default function EditUserScreen() {
                 <View style={styles.formUser}>
                     <View style={styles.avatarContainer}>
                         <Image source={Img} style={styles.avatarImg} />
+                        <View style={styles.actionChoice}>
+                            <Button color="neutral" icon="ArchiveRestore" onPress={() => setVisible(true)}>Escolher</Button>
+                            <ModalChoiceImg visible={visible} setVisible={setVisible} />
+                        </View>
                     </View>
                     <View style={styles.firtsFilds}>
                         <InputText
@@ -128,4 +133,30 @@ export default function EditUserScreen() {
         </View>
     );
 }
+type ModalChoiceImgProps = {
+    visible: boolean
+    setVisible: (value: boolean) => void
+}
 
+function ModalChoiceImg({ visible, setVisible }: ModalChoiceImgProps) {
+    return (
+        <GlobalModal
+            visible={visible}
+            onClose={() => setVisible(false)}
+        >
+            <View style={{
+                gap: 24,
+                alignItems: 'center',
+                marginBottom: 20
+            }}>
+                <GlobalText variant="bold" style={{ fontSize: 20 }}>Escolha uma imagem</GlobalText>
+                <GlobalText variant="medium" style={{ fontSize: 16, textAlign: 'center', color: colors.neutral80 }}>
+                    Ao confirmar você precisará refazer o login novamente
+                </GlobalText>
+            </View>
+            <Image source={Img} style={{ width: 70, height: 70 }} />
+
+            <Button color="neutral" onPress={() => { }}>Confirmar</Button>
+        </GlobalModal>
+    )
+}

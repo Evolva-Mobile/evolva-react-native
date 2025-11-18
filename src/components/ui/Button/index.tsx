@@ -12,7 +12,7 @@ type ButtonProps = {
   colorText?: string;
   icon?: keyof typeof Icons;
   onPress?: () => void;
-};
+}
 
 export function Button({
   children,

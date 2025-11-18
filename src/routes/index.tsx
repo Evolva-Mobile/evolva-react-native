@@ -25,7 +25,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppRoutes: React.FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="Profile"
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: '#FFF' }
