@@ -14,7 +14,8 @@ export default function PageAccount() {
   };
 
   return (
-    <ImageBackground style={styles.container} source={require('@/assets/images/principal/imagem_teste.jpeg')}>
+    <ImageBackground style={styles.container} source={require('@/assets/images/principal/imagem_teste.jpeg')}
+      resizeMode="cover">
       <LinearGradient
         colors={['transparent','transparent','rgba(0,0,0,0.1)', '#211c1cff', '#000']}
         style={styles.gradient} 
