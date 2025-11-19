@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Importando telas
 import LoginScreen from '../screens/auth/login';
+import PageInitial from '../screens/page-initial';
 import RegisterScreen from '../screens/auth/create-account';
 import ForgotPassword from '../screens/auth/forgot-password';
 import EditUserScreen from '../screens/user/edit-account';
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   Register: undefined;
   ForgotPassword: undefined;
   Details: { itemId: number; otherParam?: string }; // com parâmetros
+  PageInitial: undefined;
   Settings: undefined;
   EditUser: undefined;
   PageAccount: undefined;
@@ -27,12 +29,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppRoutes: React.FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName="PageAccount"
+      initialRouteName="PageInitial"
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: '#FFF' }
       }}>
+      
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="PageInitial" component={PageInitial} />
       <Stack.Screen name='Register' component={RegisterScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="PageAccount" component={PageAccount}/>
