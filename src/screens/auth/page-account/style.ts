@@ -11,7 +11,7 @@ import { StyleSheet } from 'react-native';
             flex: 1,
             justifyContent: 'flex-end',
             paddingHorizontal: 16,
-            paddingBottom: 60
+            paddingBottom: 50
         },
         text_title:{
             paddingVertical: 18,

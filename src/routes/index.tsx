@@ -8,7 +8,7 @@ import RegisterScreen from '../screens/auth/create-account';
 import ForgotPassword from '../screens/auth/forgot-password';
 import EditUserScreen from '../screens/user/edit-account';
 import SettingsUserScreen from '../screens/user/settings';
-import PageAccount from '../screens/page-account';
+import PageAccount from '../screens/auth/page-account';
 import ProfileScreen from '../screens/user/profile';
 
 // Definindo tipos das rotas
@@ -34,12 +34,14 @@ const AppRoutes: React.FC = () => {
         headerShown: false,
         contentStyle: { backgroundColor: '#FFF' }
       }}>
-      
-      <Stack.Screen name="Login" component={LoginScreen} />
+      {/* Pagina Inicial */}
       <Stack.Screen name="PageInitial" component={PageInitial} />
+
+      {/* Auth */}
+      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name='Register' component={RegisterScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-      <Stack.Screen name="PageAccount" component={PageAccount}/>
+      <Stack.Screen name="PageAccount" component={PageAccount} />
       {/* User */}
       <Stack.Screen name='Settings' component={SettingsUserScreen} />
       <Stack.Screen name='EditUser' component={EditUserScreen} />
