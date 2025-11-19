@@ -4,15 +4,24 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Importando telas
 import LoginScreen from '../screens/auth/login';
 import PageInitial from '../screens/page-initial';
-
+import RegisterScreen from '../screens/auth/create-account';
+import ForgotPassword from '../screens/auth/forgot-password';
+import EditUserScreen from '../screens/user/edit-account';
+import SettingsUserScreen from '../screens/user/settings';
+import PageAccount from '../screens/page-account';
+import ProfileScreen from '../screens/user/profile';
 
 // Definindo tipos das rotas
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
-  ForguetPassword: undefined;
+  ForgotPassword: undefined;
   Details: { itemId: number; otherParam?: string }; // com parâmetros
   PageInitial: undefined;
+  Settings: undefined;
+  EditUser: undefined;
+  PageAccount: undefined;
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -25,11 +34,16 @@ const AppRoutes: React.FC = () => {
         headerShown: false,
         contentStyle: { backgroundColor: '#FFF' }
       }}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={LoginScreen} />
-      <Stack.Screen name="ForguetPassword" component={LoginScreen} />
       
+      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="PageInitial" component={PageInitial} />
+      <Stack.Screen name='Register' component={RegisterScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="PageAccount" component={PageAccount}/>
+      {/* User */}
+      <Stack.Screen name='Settings' component={SettingsUserScreen} />
+      <Stack.Screen name='EditUser' component={EditUserScreen} />
+      <Stack.Screen name='Profile' component={ProfileScreen} />
     </Stack.Navigator>
   );
 }
