@@ -100,7 +100,7 @@ export default function ProfileScreen() {
 
                         {/* Atividades */}
                         <View style={styles.listContainer}>
-                            <GlobalText variant="semibold" style={styles.title}>Atividaes</GlobalText>
+                            <GlobalText variant="semibold" style={styles.title}>Atividades</GlobalText>
                             <View style={styles.achievementsList}>
                                 { }
                             </View>

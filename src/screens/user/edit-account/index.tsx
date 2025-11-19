@@ -2,7 +2,7 @@
 import { InputText } from "@/src/components/ui/InputText";
 import { useAppNavigation } from "@/src/utils/navigation";
 import { useEffect, useState } from "react";
-import { View, Image } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import Img from "@/assets/images/principal/elf.png";
 import { Button } from "@/src/components/ui/Button";
 import { USER } from "@/src/config/api-routes/user";
@@ -15,6 +15,8 @@ import { PatchRequest } from "@/src/config/api-request/PatchRequest";
 import { showToast } from "@/src/utils/toastShow";
 import { styles } from "./style";
 import { GlobalModal } from "@/src/components/ui/Modal";
+import { avatarList } from "./avatarList";
+import { ScrollView } from "react-native-gesture-handler";
 
 type userProps = {
     name: string,
@@ -23,9 +25,26 @@ type userProps = {
     password_confirmation: string
 }
 
+type ModalChoiceImgProps = {
+    visible: boolean,
+    onConfirm: (img: SelectedImgProp) => void,
+    setVisible: (value: boolean) => void
+}
+
+type SelectedImgProp = {
+    width: number,
+    uri?: string,
+    height: number
+}
+
 export default function EditUserScreen() {
     const navigation = useAppNavigation();
     const [visible, setVisible] = useState(false);
+    const [selectedAvatar, setSelectedAvatar] = useState<SelectedImgProp>({
+        width: 0,
+        uri: '',
+        height: 0
+    });
     const [user, setUser] = useState<userProps>({
         name: "",
         email: "",
@@ -75,6 +94,10 @@ export default function EditUserScreen() {
         getUser()
     }, [])
 
+    useEffect(() => {
+        console.log(selectedAvatar);
+
+    }, [selectedAvatar])
     return (
         <View style={styles.container}>
             <View>
@@ -82,10 +105,10 @@ export default function EditUserScreen() {
 
                 <View style={styles.formUser}>
                     <View style={styles.avatarContainer}>
-                        <Image source={Img} style={styles.avatarImg} />
+                        <Image source={selectedAvatar?.uri ?? ""} style={styles.avatarImg} />
                         <View style={styles.actionChoice}>
                             <Button color="neutral" icon="ArchiveRestore" onPress={() => setVisible(true)}>Escolher</Button>
-                            <ModalChoiceImg visible={visible} setVisible={setVisible} />
+                            <ModalChoiceImg visible={visible} setVisible={setVisible} onConfirm={(img) => setSelectedAvatar(img)} />
                         </View>
                     </View>
                     <View style={styles.firtsFilds}>
@@ -133,30 +156,65 @@ export default function EditUserScreen() {
         </View>
     );
 }
-type ModalChoiceImgProps = {
-    visible: boolean
-    setVisible: (value: boolean) => void
-}
 
-function ModalChoiceImg({ visible, setVisible }: ModalChoiceImgProps) {
+function ModalChoiceImg({ visible, setVisible, onConfirm }: ModalChoiceImgProps) {
+    const [selected, setSelected] = useState<SelectedImgProp>({
+        width: 0,
+        uri: '',
+        height: 0
+    });
+
+    const onConfirmAvatar = () => {
+        onConfirm(selected);
+        setVisible(false);
+    }
+
     return (
         <GlobalModal
             visible={visible}
             onClose={() => setVisible(false)}
         >
             <View style={{
-                gap: 24,
-                alignItems: 'center',
-                marginBottom: 20
+                gap: 12,
+                alignItems: 'center'
             }}>
-                <GlobalText variant="bold" style={{ fontSize: 20 }}>Escolha uma imagem</GlobalText>
+                <GlobalText variant="bold" style={{ fontSize: 20 }}>Escolha um avatar</GlobalText>
                 <GlobalText variant="medium" style={{ fontSize: 16, textAlign: 'center', color: colors.neutral80 }}>
-                    Ao confirmar você precisará refazer o login novamente
+                    Esta foto sera exibida em seu perfil
                 </GlobalText>
             </View>
-            <Image source={Img} style={{ width: 70, height: 70 }} />
+            <ScrollView style={{
+                height: 455,
+                marginVertical: 30,
+            }}>
 
-            <Button color="neutral" onPress={() => { }}>Confirmar</Button>
+
+                <View style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    gap: 4,
+                    justifyContent: "center"
+                }}>
+                    {avatarList.map((img, index) => (
+                        <TouchableOpacity onPress={() => setSelected(img)}>
+                            <Image
+                                key={index}
+                                source={img}
+                                style={{
+                                    width: 100,
+                                    height: 100,
+                                    borderRadius: 50,
+                                    borderWidth: 3,
+                                    borderColor: selected === img ? colors.grenn100 : "transparent",
+                                    marginVertical: 10
+                                }}
+                            />
+                        </TouchableOpacity>
+                    ))}
+
+                </View>
+            </ScrollView>
+            <Button color="neutral" onPress={onConfirmAvatar}>Confirmar</Button>
         </GlobalModal>
     )
 }

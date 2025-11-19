@@ -7,6 +7,7 @@ export const colors = {
     gray80: '#F7F7F7',
     withe100: '#FFF',
 
+    grenn100: "#00CA76",
     yellow100: '#F7C100',
     yellow90: '#FFD900',
     red200: '#fe0032',
