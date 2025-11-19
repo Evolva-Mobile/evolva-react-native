@@ -1,5 +1,5 @@
     import { colors } from "@/src/styles/theme";
-    import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
     export const styles = StyleSheet.create({
         container: {
@@ -8,8 +8,7 @@
         },
         contentWrapper: {
             flex: 1,
-            justifyContent: 'space-between',
-            paddingTop: '100%',
+            justifyContent: 'flex-end',
             paddingHorizontal: 16,
             paddingBottom: 60
         },
@@ -26,6 +25,7 @@
             textAlign: 'center',
             width: "100%",
             color: colors.withe100,
+            marginBottom: 50,
         },
         dividerContainer:{
             flexDirection: 'row',
@@ -41,6 +41,13 @@
             marginHorizontal: 8,
             fontSize: 14,
             color: colors.withe100,
+        },
+        gradient: {
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height: '100%',
         },
 
     });
