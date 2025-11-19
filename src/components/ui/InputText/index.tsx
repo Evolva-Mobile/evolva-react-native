@@ -14,7 +14,8 @@ type InputProps = {
 export function InputText({ label, value, onChangeText, type, icon }: InputProps) {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
-
+       
+    
     return (
         <View
             style={[
@@ -26,7 +27,6 @@ export function InputText({ label, value, onChangeText, type, icon }: InputProps
         >
             {type === "password" ? (
                 <>
-                    <View style={styles.inputBodyPassword}>
                         <Icon name={icon} size={24} color={colors.gray100} />
 
                         <TextInput
@@ -41,7 +41,6 @@ export function InputText({ label, value, onChangeText, type, icon }: InputProps
                         <TouchableOpacity onPress={() => setShow(!show)}>
                             {!show ? <Icon name="Eye" size={24} color={colors.gray100} /> : <Icon name="EyeOffIcon" size={24} color={colors.gray100} />}
                         </TouchableOpacity>
-                    </View>
                 </>
             ) : (
                 <>
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         borderRadius: 24,
         paddingHorizontal: 20,
-        height: 70,
+        height: 67,
         borderWidth: 2,
         flexDirection: "row",
         transitionDelay: ".3",
@@ -74,12 +73,8 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
+        height: 40,
         color: colors.gray100,
         fontFamily: fonts.medium
     },
-    inputBodyPassword: {
-        flexDirection: "row",
-        flex: 1,
-        gap: 8,
-    }
 });

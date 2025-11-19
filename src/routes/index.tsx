@@ -8,6 +8,7 @@ import ForgotPassword from '../screens/auth/forgot-password';
 import EditUserScreen from '../screens/user/edit-account';
 import SettingsUserScreen from '../screens/user/settings';
 import PageAccount from '../screens/page-account';
+import ProfileScreen from '../screens/user/profile';
 
 // Definindo tipos das rotas
 export type RootStackParamList = {
@@ -18,7 +19,7 @@ export type RootStackParamList = {
   Settings: undefined;
   EditUser: undefined;
   PageAccount: undefined;
-  
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -38,7 +39,7 @@ const AppRoutes: React.FC = () => {
       {/* User */}
       <Stack.Screen name='Settings' component={SettingsUserScreen} />
       <Stack.Screen name='EditUser' component={EditUserScreen} />
-      
+      <Stack.Screen name='Profile' component={ProfileScreen} />
     </Stack.Navigator>
   );
 }
