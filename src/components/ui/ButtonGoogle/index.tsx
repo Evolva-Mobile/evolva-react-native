@@ -49,7 +49,7 @@ export function ButtonGoogle() {
                 transform: [{ translateY: translate }],
                 borderBottomWidth: border
             }]}>
-                <GlobalText variant="medium" style={styles.txt}>Google</GlobalText>
+                {/* <GlobalText variant="medium" style={styles.txt}>Google</GlobalText> */}
                 <Image source={ImageGoogle} style={styles.img} />
             </Animated.View>
         </Pressable>
@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: colors.gray90,
         width: "100%",
-        gap: 8
+        gap: 8,
+        backgroundColor: colors.withe100,
     },
     img: {
         width: 30,
