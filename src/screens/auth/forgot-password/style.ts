@@ -18,11 +18,12 @@ export const styles = StyleSheet.create({
         paddingVertical: 18,
         paddingHorizontal: 8,
         fontSize: 42,
+        textAlign: "center"
     },
 
     img: {
-        width: 60,
-        height: 60,
+        width: 65,
+        height: 65,
     },
     formUser: {
         paddingVertical: 20,
@@ -33,19 +34,6 @@ export const styles = StyleSheet.create({
         gap: 28,
         alignItems: "center",
         width: "100%"
-    },
-
-    forgotPassword: {
-        textAlign: 'right',
-        marginTop: 20,
-        fontSize: 14,
-        paddingRight: 4,
-        color: colors.gray100
-    },
-
-    footerText: {
-        flexDirection: "row",
-        gap: 4,
     },
     linkFooterText: {
         color: colors.secondary

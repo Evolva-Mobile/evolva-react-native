@@ -1,37 +1,59 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, TextInputProps, View } from "react-native";
-import colors from "@/src/utils/colors"; // seu arquivo de cores
+import { colors, fonts } from "@/src/styles/theme";
+import { useState } from "react";
+import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
+import { Icon } from "../Icon";
+import { GlobalText } from "../GlobalText";
+import * as Icons from "lucide-react-native";
 
 type InputProps = {
     label: string;
-    icon?: string;
+    icon: keyof typeof Icons;
+    type?: string | "password"
 } & TextInputProps;
 
-export function InputText({ icon, label, value, onChangeText }: InputProps) {
-    const [isFocused, setIsFocused] = useState(false);
-
+export function InputText({ label, value, onChangeText, type, icon }: InputProps) {
+    const [isFocused, setIsFocused] = useState<boolean>(false);
+    const [show, setShow] = useState<boolean>(false);
+       
+    
     return (
         <View
             style={[
                 styles.inputContainer,
                 {
-                    justifyContent: icon ? "space-between" : "center",
-                    borderColor: isFocused ? colors.primary : colors.gray60,
+                    borderColor: isFocused ? colors.primary : colors.gray90,
                 },
             ]}
         >
-            <Text style={styles.textLabel}>{label}</Text>
+            {type === "password" ? (
+                <>
+                        <Icon name={icon} size={24} color={colors.gray100} />
 
-            <TextInput
-                style={styles.input}
-                value={value}
-                onChangeText={onChangeText}
-                onFocus={() => setIsFocused(true)} 
-                onBlur={() => setIsFocused(false)}   
-            />
-
-            {icon && (
-                <Text style={{ color: "#000" }}>icone</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={value}
+                            placeholder={label}
+                            secureTextEntry={!show}
+                            onChangeText={onChangeText}
+                            onFocus={() => setIsFocused(true)}
+                            onBlur={() => setIsFocused(false)}
+                        />
+                        <TouchableOpacity onPress={() => setShow(!show)}>
+                            {!show ? <Icon name="Eye" size={24} color={colors.gray100} /> : <Icon name="EyeOffIcon" size={24} color={colors.gray100} />}
+                        </TouchableOpacity>
+                </>
+            ) : (
+                <>
+                    <Icon name={icon} size={24} color={colors.gray100} />
+                    <TextInput
+                        style={styles.input}
+                        value={value}
+                        placeholder={label}
+                        onChangeText={onChangeText}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                    />
+                </>
             )}
         </View>
     );
@@ -39,26 +61,20 @@ export function InputText({ icon, label, value, onChangeText }: InputProps) {
 
 const styles = StyleSheet.create({
     inputContainer: {
-        borderRadius: 18,
+        borderRadius: 24,
         paddingHorizontal: 20,
-        height: 55,
-        borderWidth: 1,
-        position: "relative",
+        height: 67,
+        borderWidth: 2,
         flexDirection: "row",
         transitionDelay: ".3",
         gap: 8,
         alignItems: "center",
+        backgroundColor: colors.gray80
     },
     input: {
         flex: 1,
-    },
-    textLabel: {
-        position: "absolute",
-        top: -15,
-        left: 15,
-        paddingVertical: 2,
-        borderRadius: 8,
-        paddingHorizontal: 8,
-        backgroundColor: "#FFF",
+        height: 40,
+        color: colors.gray100,
+        fontFamily: fonts.medium
     },
 });

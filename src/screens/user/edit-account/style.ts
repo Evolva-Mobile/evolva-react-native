@@ -10,16 +10,6 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
-    headerContainer: {
-        alignItems: 'center',
-        justifyContent: "center"
-    },
-
-    img: {
-        width: 60,
-        height: 60,
-    },
-
     title: {
         paddingVertical: 18,
         paddingHorizontal: 8,
@@ -28,28 +18,39 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
-    imgContainer: {
-        alignItems: 'center'
+    avatarContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: "100%",
+        paddingBottom: 25,
+        borderBottomColor: colors.gray90,
+        borderBottomWidth: 2,
+        gap: 20,
     },
 
-    imgLogin: {
-        width: 205,
-        height: 205,
+    avatarImg: {
+        width: 110,
+        height: 110,
+    },
+    actionChoice:{
+        width: 158 
     },
 
     formUser: {
         paddingVertical: 20,
         gap: 20,
+        marginTop: 12,
         flexDirection: 'column'
     },
 
     firtsFilds: {
-        gap: 25
+        gap: 18
     },
 
     verifyPasswordContainer: {
         flexDirection: 'row',
-        marginBottom: 30,
+        marginBottom: 25,
         gap: 6,
         alignItems: 'center'
     },
@@ -59,36 +60,9 @@ export const styles = StyleSheet.create({
         fontSize: 12
     },
 
-    containerSubmit: {
-        marginTop: 10
-    },
-
-    dividerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 20,
-        width: '100%',
-    },
-
-    dividerText: {
-        marginHorizontal: 10,
-        fontSize: 14,
-        color: colors.neutral80
-    },
-
     footerContainer: {
         gap: 28,
         alignItems: "center",
         width: "100%"
-    },
-
-    footerText: {
-        flexDirection: "row",
-        gap: 4,
-        justifyContent: "center"
-    },
-
-    linkFooterText: {
-        color: colors.neutral100
     }
 });

@@ -1,34 +1,93 @@
-import { Image, View, Text } from "react-native";
-import { useState } from "react";
+import { useState } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
+import ImageLogin from "@/assets/images/principal/coin.png";
+import { InputText } from '@/src/components/ui/InputText';
+import { PostRequest } from '@/src/config/api-request/PostRequest';
+import { useAppNavigation } from '@/src/utils/navigation';
+import { styles } from './style';
+import { Button } from '@/src/components/ui/Button';
+import { GlobalText } from '@/src/components/ui/GlobalText';
+import { USER } from '@/src/config/api-routes/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showToast } from '@/src/utils/toastShow';
 
-import ImageLogin from "@/assets/images/Scenes/2x/Victory-2x.png"
-import { Button } from "@/src/components/ui/Button";
-import { InputText } from "@/src/components/ui/InputText";
-import { UserProps } from "./interface";
-import { styles } from "./style";
+export type UserProps = {
+    email: string;
+    password: string;
+};
 
 export default function LoginScreen() {
+    const navigation = useAppNavigation();
+    const [user, setUser] = useState<UserProps>({
+        email: "",
+        password: ""
+    });
 
-    const [user, setUser] = useState<UserProps>()
-    const handleText = () => {
-        console.log("tex", user);
-
+    const handleSubmit = async () => {
+        try {
+            const response = await PostRequest(USER.LOGIN(), user)
+            if (response?.token) {
+                await AsyncStorage.setItem("@token", response.token);
+                await AsyncStorage.setItem("@user", JSON.stringify(response.user));
+                showToast.success(response.message);
+                navigation.navigate('Profile')
+                return
+            }
+            showToast.error(response.message);
+        } catch (error) {
+            showToast.error("Algo deu errado");
+        }
     }
+
+
     return (
-        <View style={{ flex: 1, padding: 16 }}>
-            <Text style={{padding: 18, fontSize: 32, textAlign: "center", fontWeight: 500}}>Acompanahr suas metas e transforme tarefas em conquistas</Text>
-            <View style={styles.imgContainer}>
-                <Image source={ImageLogin} style={styles.imgLogin} />
+        <View style={styles.container}>
+            <View>
+                <View style={styles.headerContainer}>
+                    <Image source={ImageLogin} style={styles.img} />
+                    <GlobalText variant='bold' style={styles.title}>
+                        Entrar
+                    </GlobalText>
+                </View>
+
+                <View style={styles.formUser}>
+                    <InputText
+                        label="E-mail"
+                        value={user.email}
+                        onChangeText={(text) => setUser({ ...user, email: text })}
+                        icon={'User'}
+                    />
+
+                    <View>
+                        <InputText
+                            label="Senha"
+                            type="password"
+                            value={user.password}
+                            onChangeText={(text) => setUser({ ...user, password: text })}
+                            icon={'KeySquare'}
+                        />
+
+                        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                            <GlobalText variant={'semibold'} style={styles.forgotPassword}>Esqueci minha senha</GlobalText>
+                        </TouchableOpacity>
+                        <GlobalText />
+                    </View>
+
+
+                </View>
             </View>
 
-            <View style={styles.formUser}>
-                <InputText label={"E-mail"} value={user?.user} onChangeText={() => setUser} />
-                <InputText label={"Senha"} value={user?.password} onChangeText={() => setUser} />
+            <View style={styles.footerContainer}>
+                <Button onPress={handleSubmit} icon='Swords'>
+                    Entrar
+                </Button>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Register')}  >
+                    <GlobalText style={styles.linkFooterText} variant='bold'>Criar conta</GlobalText>
+                </TouchableOpacity>
+
             </View>
-
-
-
-            <Button background={"#000"} onPress={handleText}>Entrar</Button>
         </View>
-    )
+    );
 }
+
