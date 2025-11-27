@@ -1,34 +1,43 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect } from "react";
+import AppRoutes from "../routes";
+import { useFonts, WorkSans_400Regular, WorkSans_500Medium, WorkSans_700Bold, WorkSans_600SemiBold } from "@expo-google-fonts/work-sans";
+import { Oldenburg_400Regular } from "@expo-google-fonts/oldenburg";
+import * as SplashScreen from "expo-splash-screen";
+import Toast from "react-native-toast-message";
+import { CustomToast } from "../components/ui/Toast";
 
-export default function Page() {
+
+export default function App() {
+  const [fontsLoaded] = useFonts({
+    WorkSans_400Regular,
+    WorkSans_500Medium,
+    WorkSans_600SemiBold,
+    WorkSans_700Bold,
+    Oldenburg_400Regular,
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) return null;
+
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Hello World</Text>
-        <Text style={styles.subtitle}>This is the first page of your app.</Text>
-      </View>
-    </View>
+    <>
+      <AppRoutes />
+      <Toast
+        config={{
+          success: CustomToast.success,
+          error: CustomToast.error,
+          warning: CustomToast.warning,
+          info: CustomToast.info,
+        }}
+        visibilityTime={1500}
+        autoHide
+        position="top"
+      />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-  },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
-  },
-});
