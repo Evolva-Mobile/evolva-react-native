@@ -24,7 +24,15 @@ export default function TabsJorney() {
                     height: 75,
                     paddingTop: 18,
                     paddingBottom: 18,
-                    paddingHorizontal: 16
+                    paddingHorizontal: 16,
+                    borderTopWidth: 0,
+                    // 🔹 Sombra customizada (Android + iOS)
+                    shadowColor: "#0000026",
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowRadius: 20,
+                    elevation: 8,
+
+                    backgroundColor: "#FFF",
                 },
                 tabBarItemStyle: {
                     flex: 1,
