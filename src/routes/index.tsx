@@ -10,6 +10,7 @@ import EditUserScreen from '../screens/user/edit-account';
 import SettingsUserScreen from '../screens/user/settings';
 import PageAccount from '../screens/auth/page-account';
 import ProfileScreen from '../screens/user/profile';
+import TabsJorney from '../components/layout/tabsJourney';
 
 // Definindo tipos das rotas
 export type RootStackParamList = {
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   EditUser: undefined;
   PageAccount: undefined;
   Profile: undefined;
+  Jorney: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -29,7 +31,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppRoutes: React.FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName="PageInitial"
+      initialRouteName="Jorney"
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: '#FFF' }
@@ -46,6 +48,9 @@ const AppRoutes: React.FC = () => {
       <Stack.Screen name='Settings' component={SettingsUserScreen} />
       <Stack.Screen name='EditUser' component={EditUserScreen} />
       <Stack.Screen name='Profile' component={ProfileScreen} />
+
+      {/* Jornada */}
+      <Stack.Screen name="Jorney" component={TabsJorney} />
     </Stack.Navigator>
   );
 }
