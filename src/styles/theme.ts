@@ -1,7 +1,7 @@
 export const colors = {
     neutral100: '#3C3C3C',
     neutral90: '#4B4B4B',
-    neutral80: '#39465A',
+    neutral80: '#777777',
     gray100: '#AFAFAF',
     gray90: '#E5E5E5',
     gray80: '#F7F7F7',
