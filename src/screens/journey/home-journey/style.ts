@@ -2,13 +2,26 @@ import { colors } from "@/src/styles/theme";
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 16,
-        paddingBottom: 24,
-        paddingTop: 28,
-        justifyContent: 'space-between',
+    journeyInfo: {
+        borderBottomColor: colors.gray90,
+        borderBottomWidth: 3,
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 14,
+        paddingBottom: 16
     },
 
-   
+    imgAvatarJourney: {
+        width: 90,
+        height: 90
+    },
+
+    titleJourney: {
+        fontSize: 20
+    },
+
+    descJourney: {
+        color: colors.neutral80
+    },
+
 });

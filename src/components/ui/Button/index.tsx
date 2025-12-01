@@ -127,7 +127,7 @@ export function Button({
 
 const styles = StyleSheet.create({
   btnContainer: {
-    borderRadius: 50,
+    borderRadius: 24,
     paddingHorizontal: 30,
     paddingVertical: 14,
     height: 67,

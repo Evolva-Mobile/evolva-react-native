@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        paddingVertical: 8,
+        paddingVertical: 24,
+        paddingHorizontal: 24
     },
     text: {
         fontSize: 20,

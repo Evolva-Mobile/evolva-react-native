@@ -20,6 +20,7 @@ export default function TabsJorney() {
     return (
         <Tab.Navigator
             screenOptions={{
+
                 headerShown: false,
                 tabBarShowLabel: false,
                 tabBarStyle: {

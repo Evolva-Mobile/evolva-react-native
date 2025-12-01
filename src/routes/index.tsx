@@ -10,7 +10,8 @@ import EditUserScreen from '../screens/user/edit-account';
 import SettingsUserScreen from '../screens/user/settings';
 import PageAccount from '../screens/auth/page-account';
 import ProfileScreen from '../screens/user/profile';
-import TabsJorney from '../components/layout/tabsJourney';
+
+import MainJourney from '../screens/journey/main-journey';
 
 // Definindo tipos das rotas
 export type RootStackParamList = {
@@ -50,7 +51,7 @@ const AppRoutes: React.FC = () => {
       <Stack.Screen name='Profile' component={ProfileScreen} />
 
       {/* Jornada */}
-      <Stack.Screen name="Jorney" component={TabsJorney} />
+      <Stack.Screen name="Jorney" component={MainJourney} />
     </Stack.Navigator>
   );
 }
