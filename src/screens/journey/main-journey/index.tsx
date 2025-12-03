@@ -11,8 +11,7 @@ export default function MainJourney() {
 
     return (
         <View style={{ flex: 1 }}>
-            <HeaderBack title={"Os Abestalhados"} onPress={navigation.goBack} />
-            
+            <HeaderBack title={"Os Abestalhados"} onPress={navigation.goBack} />  
             <TabsJorney />
         </View>
     );

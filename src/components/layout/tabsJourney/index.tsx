@@ -14,13 +14,13 @@ import ImageMission from '@/assets/images/components/tabs/magic-wand.png'
 import ImageMore from '@/assets/images/components/tabs/more.png'
 
 import { colors } from '@/src/styles/theme';
+import RegisterMissionScreen from '@/src/screens/journey/create-mission';
 const Tab = createBottomTabNavigator();
 
 export default function TabsJorney() {
     return (
         <Tab.Navigator
             screenOptions={{
-
                 headerShown: false,
                 tabBarShowLabel: false,
                 tabBarStyle: {
@@ -44,7 +44,7 @@ export default function TabsJorney() {
         >
 
             <Tab.Screen
-                name="Hone"
+                name="Home"
                 component={JourneyScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
@@ -94,9 +94,11 @@ export default function TabsJorney() {
                     )
                 }}
             />
+
             <Tab.Screen
                 name="Missions"
-                component={RankingScreen}
+                component={RegisterMissionScreen}
+                
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View

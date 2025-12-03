@@ -28,78 +28,80 @@ export default function RankJorney() {
     const others = players.slice(3);
 
     return (
-        <ScrollView
-            contentContainerStyle={{ paddingBottom: 28, gap: 24, paddingHorizontal: 24, paddingTop: 8, backgroundColor: '#FFF' }}
-            showsVerticalScrollIndicator={false}
-        >
-            <View>
-                <GlobalText variant="bold" style={styles.title}>Pódio</GlobalText>
+        <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 28, gap: 24, paddingHorizontal: 24, paddingTop: 8, backgroundColor: '#FFF' }}
+                showsVerticalScrollIndicator={false}
+            >
+                <View>
+                    <GlobalText variant="bold" style={styles.title}>Pódio</GlobalText>
 
-                <View style={styles.listRank}>
-                    {podium.map((player, index) => {
-                        const isLast = index === podium.length - 1;
-                        return (
-                            <View
-                                key={player.position}
-                                style={[
-                                    styles.itemPlayer,
-                                    isLast && { borderBottomWidth: 0 }
-                                ]}
-                            >
-                                <Image
-                                    source={
-                                        index === 0
-                                            ? MedalFirst
-                                            : index === 1
-                                                ? MedalSecond
-                                                : MedalThird
-                                    }
-                                    style={styles.imgMedal}
-                                />
+                    <View style={styles.listRank}>
+                        {podium.map((player, index) => {
+                            const isLast = index === podium.length - 1;
+                            return (
+                                <View
+                                    key={player.position}
+                                    style={[
+                                        styles.itemPlayer,
+                                        isLast && { borderBottomWidth: 0 }
+                                    ]}
+                                >
+                                    <Image
+                                        source={
+                                            index === 0
+                                                ? MedalFirst
+                                                : index === 1
+                                                    ? MedalSecond
+                                                    : MedalThird
+                                        }
+                                        style={styles.imgMedal}
+                                    />
 
-                                <Image source={player.avatar} style={styles.imgAvatar} />
+                                    <Image source={player.avatar} style={styles.imgAvatar} />
 
-                                <View style={styles.textRank}>
-                                    <GlobalText variant="semibold">{player.name}</GlobalText>
-                                    <GlobalText style={styles.textXp}>{player.xp} XP</GlobalText>
+                                    <View style={styles.textRank}>
+                                        <GlobalText variant="semibold">{player.name}</GlobalText>
+                                        <GlobalText style={styles.textXp}>{player.xp} XP</GlobalText>
+                                    </View>
                                 </View>
-                            </View>
-                        );
-                    })}
+                            );
+                        })}
+                    </View>
                 </View>
-            </View>
 
 
-            <View>
-                <GlobalText variant="bold" style={styles.title}>Outros Jogadores</GlobalText>
+                <View>
+                    <GlobalText variant="bold" style={styles.title}>Outros Jogadores</GlobalText>
 
-                <View style={styles.listRank}>
-                    {others.map((player, index) => {
-                        const isLast = index === others.length - 1;
+                    <View style={styles.listRank}>
+                        {others.map((player, index) => {
+                            const isLast = index === others.length - 1;
 
-                        return (
-                            <View
-                                key={player.position}
-                                style={[
-                                    styles.itemPlayer,
-                                    isLast && { borderBottomWidth: 0 }
-                                ]}
-                            >
-                                <GlobalText variant="semibold" style={{ fontSize: 16 }}>
-                                    {player.position}º
-                                </GlobalText>
+                            return (
+                                <View
+                                    key={player.position}
+                                    style={[
+                                        styles.itemPlayer,
+                                        isLast && { borderBottomWidth: 0 }
+                                    ]}
+                                >
+                                    <GlobalText variant="semibold" style={{ fontSize: 16 }}>
+                                        {player.position}º
+                                    </GlobalText>
 
-                                <Image source={player.avatar} style={styles.imgAvatar} />
+                                    <Image source={player.avatar} style={styles.imgAvatar} />
 
-                                <View style={styles.textRank}>
-                                    <GlobalText variant="semibold">{player.name}</GlobalText>
-                                    <GlobalText style={styles.textXp}>{player.xp} XP</GlobalText>
+                                    <View style={styles.textRank}>
+                                        <GlobalText variant="semibold">{player.name}</GlobalText>
+                                        <GlobalText style={styles.textXp}>{player.xp} XP</GlobalText>
+                                    </View>
                                 </View>
-                            </View>
-                        );
-                    })}
+                            );
+                        })}
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
