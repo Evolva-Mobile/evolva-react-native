@@ -16,6 +16,8 @@ export const colors = {
     red90: '#fc4848',
     brown100: '#7F5C42',
     brown90: '#AC7F5E',
+    blue100: '#1CB0F6',
+    blue90: '#C6EBF8',
 
     primary: '#FFD900',
     secondary: '#AC7F5E'

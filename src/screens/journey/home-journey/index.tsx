@@ -1,12 +1,23 @@
-import { ScrollView, View, Image, StyleSheet } from "react-native"
+import { ScrollView, View, Image, StyleSheet, TouchableOpacity } from "react-native"
 import { styles } from "./style"
 import { GlobalText } from "@/src/components/ui/GlobalText";
 import ImageAvatar from '@/assets/images/components/journey/avatars/standard.png'
+import ImageMission from '@/assets/images/components/journey/goal.png'
 import HomeRank from "@/src/components/layout/journeyRank";
 import { colors } from "@/src/styles/theme";
+import { Icon } from "@/src/components/ui/Icon";
+import { useState } from "react";
+import { GlobalModal } from "@/src/components/ui/Modal";
+import DetailMissionModal from "@/src/components/layout/journeyDetailMissionModal";
+
 
 export default function HomeJourney() {
-
+    const [visible, setVisible] = useState(false);
+    const missions = [
+        { title: "Tirar Lixo", days: "10", xp: 4123, status: false },
+        { title: "Lavar Louça", days: "10", xp: 1231, status: true },
+        { title: "Teste", days: "10", xp: 1231, status: true },
+    ];
     return (
         <View style={{ flex: 1, backgroundColor: "#FFF" }}>
             <ScrollView
@@ -25,6 +36,55 @@ export default function HomeJourney() {
                 </View>
 
                 <HomeRank />
+
+                <View>
+                    <GlobalText variant="bold" style={styles.title}>Missões</GlobalText>
+
+                    <View style={styles.listMission}>
+                        {missions.map((mission, index) => {
+                            const isLast = index === missions.length - 1;
+                            return (
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    onPress={() => setVisible(true)}
+                                    key={index}
+                                    style={[
+                                        styles.itemMission,
+                                        isLast && { borderBottomWidth: 0 }
+                                    ]}
+                                >
+                                    <View style={{ flexDirection: "row", gap: 10 }}>
+                                        <View style={styles.containerMissionImage} >
+                                            <Image source={ImageMission} style={styles.imgMission} />
+                                        </View>
+                                        <View style={{ marginTop: 6 }}>
+                                            <GlobalText variant="semibold" style={{ fontSize: 16 }}>
+                                                {mission.title}
+                                            </GlobalText>
+                                            <View style={styles.sameTextPlace}>
+                                                <View style={styles.samePlace}>
+                                                    <Icon name="Clock10" size={16} color={colors.gray100} />
+                                                    <GlobalText style={styles.text}>
+                                                        {mission.days} Dias
+                                                    </GlobalText>
+                                                </View>
+                                                <View style={styles.samePlace}>
+                                                    <Icon name="Stars" size={16} color={colors.gray100} />
+                                                    <GlobalText style={styles.text}>
+                                                        {mission.xp} XP
+                                                    </GlobalText>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <Icon name={mission.status ? "CircleDashed" : "CircleDotDashed"} size={20} color={mission.status ? colors.neutral80 : colors.blue100} />
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </View>
+
+                    <DetailMissionModal visible={visible} setVisible={setVisible}/>
+                </View>
             </ScrollView>
         </View>
     );
