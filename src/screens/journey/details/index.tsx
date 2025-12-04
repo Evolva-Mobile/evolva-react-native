@@ -7,6 +7,7 @@ import { GlobalText } from "@/src/components/ui/GlobalText";
 import QRCode from 'react-native-qrcode-svg';
 import { colors } from "@/src/styles/theme";
 import { Button } from "@/src/components/ui/Button";
+import { ButtonSmall } from "@/src/components/ui/ButtonSmall"
 
 export default function DetailsJorney() {
     const players = [
@@ -60,6 +61,11 @@ export default function DetailsJorney() {
                 <GlobalText variant="bold" style={styles.titleJourney}>
                     Compartilhar Link
                 </GlobalText>
+                <View style={{ flexDirection: "row", justifyContent: "space-around", width: "100%" }}>
+                    <ButtonSmall icon="Copy" color="neutral" />
+                    <ButtonSmall icon="MessageCircle" color="neutral" />
+                    <ButtonSmall icon="Share2" color="neutral" />
+                </View>
             </View>
 
             {/* Lista de Jogadores */}
