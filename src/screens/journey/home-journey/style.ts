@@ -66,6 +66,13 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         gap: 12,
         marginTop: 6
+    },
+    noneMission:{
+        flexDirection: "row",
+        gap: 24,
+        justifyContent: 'center',
+        alignItems: "center",
+        padding: 16
     }
 
 });

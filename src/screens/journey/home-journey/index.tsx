@@ -7,17 +7,18 @@ import HomeRank from "@/src/components/layout/journeyRank";
 import { colors } from "@/src/styles/theme";
 import { Icon } from "@/src/components/ui/Icon";
 import { useState } from "react";
-import { GlobalModal } from "@/src/components/ui/Modal";
-import DetailMissionModal from "@/src/components/layout/journeyDetailMissionModal";
+import { JourneyProps } from "../main-journey/type";
 
 
-export default function HomeJourney() {
+export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
     const [visible, setVisible] = useState(false);
-    const missions = [
-        { title: "Tirar Lixo", days: "10", xp: 4123, status: false },
-        { title: "Lavar Louça", days: "10", xp: 1231, status: true },
-        { title: "Teste", days: "10", xp: 1231, status: true },
-    ];
+
+    // const missions = [
+    //     { title: "Tirar Lixo", days: "10", xp: 4123, status: false },
+    //     { title: "Lavar Louça", days: "10", xp: 1231, status: true },
+    //     { title: "Teste", days: "10", xp: 1231, status: true },
+    // ];
+
     return (
         <View style={{ flex: 1, backgroundColor: "#FFF" }}>
             <ScrollView
@@ -31,7 +32,7 @@ export default function HomeJourney() {
                         style={styles.imgAvatarJourney}
                     />
                     <GlobalText variant="medium" style={styles.descJourney}>
-                        Grupo criado para afazeres de casa
+                        {journey?.description ?? "Sem descrição"}
                     </GlobalText>
                 </View>
 
@@ -41,49 +42,60 @@ export default function HomeJourney() {
                     <GlobalText variant="bold" style={styles.title}>Missões</GlobalText>
 
                     <View style={styles.listMission}>
-                        {missions.map((mission, index) => {
-                            const isLast = index === missions.length - 1;
-                            return (
-                                <TouchableOpacity
-                                    activeOpacity={0.8}
-                                    onPress={() => setVisible(true)}
-                                    key={index}
-                                    style={[
-                                        styles.itemMission,
-                                        isLast && { borderBottomWidth: 0 }
-                                    ]}
-                                >
-                                    <View style={{ flexDirection: "row", gap: 10 }}>
-                                        <View style={styles.containerMissionImage} >
-                                            <Image source={ImageMission} style={styles.imgMission} />
-                                        </View>
-                                        <View style={{ marginTop: 6 }}>
-                                            <GlobalText variant="semibold" style={{ fontSize: 16 }}>
-                                                {mission.title}
-                                            </GlobalText>
-                                            <View style={styles.sameTextPlace}>
-                                                <View style={styles.samePlace}>
-                                                    <Icon name="Clock10" size={16} color={colors.gray100} />
-                                                    <GlobalText style={styles.text}>
-                                                        {mission.days} Dias
-                                                    </GlobalText>
-                                                </View>
-                                                <View style={styles.samePlace}>
-                                                    <Icon name="Stars" size={16} color={colors.gray100} />
-                                                    <GlobalText style={styles.text}>
-                                                        {mission.xp} XP
-                                                    </GlobalText>
+                        {journey?.tasks.length !== 0 ? (
+                            journey?.tasks.map((mission, index) => {
+                                const isLast = index === journey?.tasks.length - 1;
+                                return (
+                                    <TouchableOpacity
+                                        activeOpacity={0.8}
+                                        onPress={() => setVisible(true)}
+                                        key={index}
+                                        style={[
+                                            styles.itemMission,
+                                            isLast && { borderBottomWidth: 0 }
+                                        ]}
+                                    >
+                                        <View style={{ flexDirection: "row", gap: 10 }}>
+                                            <View style={styles.containerMissionImage} >
+                                                <Image source={ImageMission} style={styles.imgMission} />
+                                            </View>
+                                            <View style={{ marginTop: 6 }}>
+                                                <GlobalText variant="semibold" style={{ fontSize: 16 }}>
+                                                    {mission.title}
+                                                </GlobalText>
+                                                <View style={styles.sameTextPlace}>
+                                                    <View style={styles.samePlace}>
+                                                        <Icon name="Clock10" size={16} color={colors.gray100} />
+                                                        <GlobalText style={styles.text}>
+                                                            {mission.days} Dias
+                                                        </GlobalText>
+                                                    </View>
+                                                    <View style={styles.samePlace}>
+                                                        <Icon name="Stars" size={16} color={colors.gray100} />
+                                                        <GlobalText style={styles.text}>
+                                                            {mission.xp} XP
+                                                        </GlobalText>
+                                                    </View>
                                                 </View>
                                             </View>
                                         </View>
-                                    </View>
-                                    <Icon name={mission.status ? "CircleDashed" : "CircleDotDashed"} size={20} color={mission.status ? colors.neutral80 : colors.blue100} />
-                                </TouchableOpacity>
-                            );
-                        })}
+                                        <Icon name={mission.status ? "CircleDashed" : "CircleDotDashed"} size={20} color={mission.status ? colors.neutral80 : colors.blue100} />
+                                    </TouchableOpacity>
+                                );
+                            })
+
+                        ) : (
+                            <View style={styles.noneMission}>
+                                <Icon name="Package2" size={28} color={colors.neutral80} />
+                                <GlobalText style={{ color: colors.neutral80 }} variant="semibold">
+                                    Nenhuma missão foi criada
+                                </GlobalText>
+                            </View>
+
+                        )}
                     </View>
 
-                    <DetailMissionModal visible={visible} setVisible={setVisible}/>
+                    {/* <DetailMissionModal visible={visible} setVisible={setVisible}/> */}
                 </View>
             </ScrollView>
         </View>

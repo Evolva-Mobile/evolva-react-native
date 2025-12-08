@@ -8,8 +8,9 @@ import QRCode from 'react-native-qrcode-svg';
 import { colors } from "@/src/styles/theme";
 import { Button } from "@/src/components/ui/Button";
 import { ButtonSmall } from "@/src/components/ui/ButtonSmall"
+import { JourneyProps } from "../main-journey/type"
 
-export default function DetailsJorney() {
+export default function DetailsJorney({ journey }: { journey?: JourneyProps }) {
     const players = [
         { name: "Eduardo", xp: 12312123, avatar: ImagePlayer },
         { name: "Rodolfo", xp: 55123, avatar: ImagePlayer },
@@ -32,7 +33,7 @@ export default function DetailsJorney() {
                     style={styles.imgAvatarJourney}
                 />
                 <GlobalText variant="medium" style={styles.descJourney}>
-                    Grupo criado para afazeres de casa
+                    {journey?.description ?? "Sem descrição"}
                 </GlobalText>
             </View>
 
@@ -43,9 +44,9 @@ export default function DetailsJorney() {
                 </GlobalText>
 
                 <View style={styles.bodyCode}>
-                    <QRCode>
-
-                    </QRCode>
+                    <QRCode
+                        value={journey?.join_code}
+                    />
                 </View>
 
                 <View style={styles.dividerContainer}>
@@ -55,7 +56,9 @@ export default function DetailsJorney() {
                 </View>
 
                 <View style={styles.bodyTextCode}>
-                    <GlobalText variant="semibold" style={styles.textCode}>1YR-FAS</GlobalText>
+                    <GlobalText variant="semibold" style={styles.textCode}>
+                        {journey?.join_code}
+                    </GlobalText>
                 </View>
 
                 <GlobalText variant="bold" style={styles.titleJourney}>

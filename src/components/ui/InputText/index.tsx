@@ -2,7 +2,6 @@ import { colors, fonts } from "@/src/styles/theme";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
 import { Icon } from "../Icon";
-import { GlobalText } from "../GlobalText";
 import * as Icons from "lucide-react-native";
 
 type InputProps = {
@@ -11,7 +10,7 @@ type InputProps = {
     type?: string | "password"
 } & TextInputProps;
 
-export function InputText({ label, value, onChangeText, type, icon }: InputProps) {
+export function InputText({ label, value, onChangeText, type, icon, keyboardType }: InputProps) {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
 
@@ -33,6 +32,7 @@ export function InputText({ label, value, onChangeText, type, icon }: InputProps
                         style={styles.input}
                         value={value}
                         placeholder={label}
+                        keyboardType={keyboardType}
                         secureTextEntry={!show}
                         onChangeText={onChangeText}
                         onFocus={() => setIsFocused(true)}
@@ -49,6 +49,7 @@ export function InputText({ label, value, onChangeText, type, icon }: InputProps
                         style={styles.input}
                         value={value}
                         placeholder={label}
+                        keyboardType={keyboardType}
                         onChangeText={onChangeText}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: colors.gray80,
     },
-    
+
     input: {
         flex: 1,
         minWidth: 0,

@@ -3,7 +3,7 @@ import { Icon } from "../../ui/Icon";
 import { colors } from "@/src/styles/theme";
 import { GlobalText } from "../../ui/GlobalText";
 type HeaderBackProps = {
-    title: string
+    title?: string
     onPress?: () => void;
 };
 

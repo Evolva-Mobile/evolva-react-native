@@ -1,7 +1,7 @@
 import { InputText } from "@/src/components/ui/InputText";
 import { PostRequest } from "@/src/config/api-request/PostRequest";
 import { useAppNavigation } from "@/src/utils/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { styles } from "./style";
 import { Button } from "@/src/components/ui/Button";
@@ -11,42 +11,60 @@ import { GlobalText } from "@/src/components/ui/GlobalText";
 import { colors } from "@/src/styles/theme";
 import { showToast } from "@/src/utils/toastShow";
 import { InputToggle } from "@/src/components/ui/InputToggle";
+import { InputDate } from "@/src/components/ui/InputDate";
+import { TASK } from "@/src/config/api-routes/task";
 
-type userProps = {
-    name: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
+type taskProps = {
+    journey_id?: number | string;
+    title: string;
+    description: string;
+    type: string;
+    xp_reward: number;
+    coin_reward: number;
+    deadline: string; // ISO date string (ex: '2025-12-31T23:59:00.000Z')
+    requires_proof: boolean;
+    proof_url: string;
 };
 
 export default function RegisterMissionScreen() {
     const navigation = useAppNavigation();
-    const [user, setUser] = useState<userProps>({
-        name: "",
-        email: "",
-        password: "",
-        password_confirmation: ""
+    const [task, setTask] = useState<taskProps>({
+        journey_id: 13,
+        title: "",
+        description: "",
+        xp_reward: 0,
+        coin_reward: 0,
+        type: "normal",
+        deadline: "",
+        requires_proof: false,
+        proof_url: ""
     });
 
-    const isPasswordValid = user.password.length >= 8;
+    useEffect(() => {
+        console.log(task);
+
+    }, [task])
 
     const handleSubmit = async () => {
-        if (user.password !== user.password_confirmation) {
-            showToast.warning("As senhas não coincidem")
+        if (task.title === "") {
+            showToast.warning("Digite um titulo")
             return;
         }
-
-        if (!isPasswordValid) {
-            showToast.warning("A senha é muito curta")
+        else if (!task.coin_reward) {
+            showToast.warning("Digite a quantidade de moedas")
+            return;
+        }
+        else if (!task.xp_reward) {
+            showToast.warning("Digite a quantidade de xp")
             return;
         }
 
         try {
-            const response = await PostRequest(USER.REGISTER(), user);
+            const response = await PostRequest(TASK.CREATE(), task);
 
             if (response.success) {
                 showToast.success(response.message)
-                navigation.navigate("Login");
+                clearFilds();
             } else {
                 showToast.error(response.message)
             }
@@ -55,6 +73,19 @@ export default function RegisterMissionScreen() {
 
         }
     };
+
+    const clearFilds = () => {
+        setTask({
+            title: "",
+            description: "",
+            xp_reward: 0,
+            coin_reward: 0,
+            type: "normal",
+            deadline: "",
+            requires_proof: false,
+            proof_url: ""
+        })
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: "#FFF" }}>
@@ -72,14 +103,14 @@ export default function RegisterMissionScreen() {
                     <View style={styles.formUser}>
                         <InputText
                             label="Nome da Missão"
-                            value={user.name}
-                            onChangeText={(text) => setUser({ ...user, name: text })}
+                            value={task.title}
+                            onChangeText={(text) => setTask({ ...task, title: text })}
                             icon={"FlagTriangleRight"}
                         />
                         <InputText
                             label="Objetivo"
-                            value={user.email}
-                            onChangeText={(text) => setUser({ ...user, email: text })}
+                            value={task.description}
+                            onChangeText={(text) => setTask({ ...task, description: text })}
                             icon={"ScrollText"}
                         />
                         <View style={styles.samePlace}>
@@ -87,8 +118,9 @@ export default function RegisterMissionScreen() {
                                 <InputText
                                     label="XP"
                                     type="number"
-                                    value={user.password}
-                                    onChangeText={(text) => setUser({ ...user, password: text })}
+                                    keyboardType="numeric"
+                                    value={String(task.xp_reward)}
+                                    onChangeText={(text) => setTask({ ...task, xp_reward: Number(text) })}
                                     icon={"Stars"}
                                 />
                             </View>
@@ -96,27 +128,22 @@ export default function RegisterMissionScreen() {
                                 <InputText
                                     label="Coin"
                                     type="number"
-                                    value={user.password}
-                                    onChangeText={(text) => setUser({ ...user, password: text })}
+                                    keyboardType="numeric"
+                                    value={String(task.coin_reward)}
+                                    onChangeText={(text) => setTask({ ...task, coin_reward: Number(text) })}
                                     icon={"CircleStar"}
                                 />
                             </View>
                         </View>
-                        <View style={styles.samePlace}>
-                            <InputText
-                                label="Data"
-                                type="number"
-                                value={user.password}
-                                onChangeText={(text) => setUser({ ...user, password: text })}
-                                icon={"Calendar"}
-                            />
-                        </View>
-                        <View style={styles.samePlace}>
+
+                        <InputDate label={"Data"} icon={"Calendar"} value={task.deadline} onChange={(text) => setTask({ ...task, deadline: text })} />
+
+                        {/* <View style={styles.samePlace}>
                             <View style={styles.inputHalf}>
                                 <InputText
                                     label="Hora Inicio"
                                     type="number"
-                                    value={user.password}
+                                    value={task.}
                                     onChangeText={(text) => setUser({ ...user, password: text })}
                                     icon={"Clock12"}
                                 />
@@ -130,11 +157,11 @@ export default function RegisterMissionScreen() {
                                     icon={"Clock9"}
                                 />
                             </View>
-                        </View>
+                        </View> */}
 
                         <View style={styles.containersToggles}>
-                            <InputToggle icon="File" label="Requer" labelBold="Prova" />
-                            <InputToggle icon="Skull" label="É" labelBold="Boss" />
+                            <InputToggle icon="File" label="Requer" labelBold="Prova" value={task.requires_proof} setValue={(e) => setTask({ ...task, requires_proof: e })} />
+                            <InputToggle icon="Skull" label="É" labelBold="Boss" value={task.type === "boss"} setValue={(isBoss) => setTask({ ...task, type: isBoss ? "boss" : "normal" })} />
                         </View>
                     </View>
                 </View>

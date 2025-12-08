@@ -15,9 +15,19 @@ import ImageMore from '@/assets/images/components/tabs/more.png'
 
 import { colors } from '@/src/styles/theme';
 import RegisterMissionScreen from '@/src/screens/journey/create-mission';
+import { useEffect } from 'react';
+import { JourneyProps } from '@/src/screens/journey/main-journey/type';
+
+
 const Tab = createBottomTabNavigator();
 
-export default function TabsJorney() {
+type TabsJourneyProps = {
+    journey?: JourneyProps
+}
+export default function TabsJorney({ journey }: TabsJourneyProps) {
+    useEffect(() => {
+        console.log(journey);
+    }, [])
     return (
         <Tab.Navigator
             screenOptions={{
@@ -45,7 +55,6 @@ export default function TabsJorney() {
 
             <Tab.Screen
                 name="Home"
-                component={JourneyScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View
@@ -58,8 +67,9 @@ export default function TabsJorney() {
                         </View>
                     )
                 }}
-
-            />
+            >
+                {() => <JourneyScreen journey={journey} />}
+            </Tab.Screen>
 
             <Tab.Screen
                 name="Chat"
@@ -98,7 +108,7 @@ export default function TabsJorney() {
             <Tab.Screen
                 name="Missions"
                 component={RegisterMissionScreen}
-                
+
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View
@@ -112,9 +122,9 @@ export default function TabsJorney() {
                     )
                 }}
             />
+
             <Tab.Screen
                 name="More"
-                component={MoreScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View
@@ -127,7 +137,10 @@ export default function TabsJorney() {
                         </View>
                     )
                 }}
-            />
+            >
+                
+                {() => <MoreScreen journey={journey} />}
+            </Tab.Screen>
         </Tab.Navigator>
     );
 }

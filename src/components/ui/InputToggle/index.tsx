@@ -14,22 +14,25 @@ type ToggleProps = {
     label: string;
     labelBold?: string;
     icon: keyof typeof Icons;
+    value: boolean;
+    setValue: (v: boolean) => void
 };
 
-export function InputToggle({ label, icon, labelBold }: ToggleProps) {
-    const [on, setOn] = useState(false);
+export function InputToggle({ label, icon, labelBold, value, setValue }: ToggleProps) {
+
 
     // animação
     const anim = useRef(new Animated.Value(0)).current;
 
     const toggle = () => {
         Animated.timing(anim, {
-            toValue: on ? 0 : 1,
+            toValue: value ? 0 : 1,
             duration: 50,
             useNativeDriver: false,
         }).start();
 
-        setOn(!on);
+        setValue(!value)
+
     };
 
 

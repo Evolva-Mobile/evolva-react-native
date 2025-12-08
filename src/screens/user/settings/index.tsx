@@ -1,30 +1,33 @@
 
-import { useAppNavigation } from "@/src/utils/navigation";
-import { useState } from "react";
-import { Modal, TouchableOpacity, View, Image } from "react-native";
 import Img from "@/assets/images/principal/frankenstein.png";
-import { styles } from "./style";
-import { GlobalText } from "@/src/components/ui/GlobalText";
 import { HeaderBack } from "@/src/components/layout/headerBack";
-import { Icon } from "@/src/components/ui/Icon";
-import { colors } from "@/src/styles/theme";
 import { Button } from "@/src/components/ui/Button";
+import { GlobalText } from "@/src/components/ui/GlobalText";
+import { Icon } from "@/src/components/ui/Icon";
+import { GlobalModal } from "@/src/components/ui/Modal";
 import { PostRequest } from "@/src/config/api-request/PostRequest";
 import { USER } from "@/src/config/api-routes/user";
+import { AuthContext } from "@/src/contexts/AuthContext";
+import { colors } from "@/src/styles/theme";
+import { useAppNavigation } from "@/src/utils/navigation";
 import { showToast } from "@/src/utils/toastShow";
-import { GlobalModal } from "@/src/components/ui/Modal";
+import { useContext, useState } from "react";
+import { Image, TouchableOpacity, View } from "react-native";
+import { styles } from "./style";
 
 export default function SettingsUserScreen() {
     const navigation = useAppNavigation();
+    const { logout } = useContext(AuthContext);
+
     const [visible, setVisible] = useState(false);
     const handleSubmit = async () => {
-
+    
         try {
             const response = await PostRequest(USER.LOGOUT())
             if (response) {
                 setVisible(false)
                 showToast.success(response.message);
-                navigation.navigate('Login')
+                await logout();
             }
 
         } catch (error) {
