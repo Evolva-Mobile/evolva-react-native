@@ -64,22 +64,22 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
                                                     {mission.title}
                                                 </GlobalText>
                                                 <View style={styles.sameTextPlace}>
-                                                    <View style={styles.samePlace}>
+                                                    {/* <View style={styles.samePlace}>
                                                         <Icon name="Clock10" size={16} color={colors.gray100} />
                                                         <GlobalText style={styles.text}>
-                                                            {mission.days} Dias
+                                                            {mission.deadline} Dias
                                                         </GlobalText>
-                                                    </View>
+                                                    </View> */}
                                                     <View style={styles.samePlace}>
                                                         <Icon name="Stars" size={16} color={colors.gray100} />
                                                         <GlobalText style={styles.text}>
-                                                            {mission.xp} XP
+                                                            {mission.xp_reward} XP
                                                         </GlobalText>
                                                     </View>
                                                 </View>
                                             </View>
                                         </View>
-                                        <Icon name={mission.status ? "CircleDashed" : "CircleDotDashed"} size={20} color={mission.status ? colors.neutral80 : colors.blue100} />
+                                        <Icon name={!mission.is_completed ? "CircleDashed" : "CircleDotDashed"} size={20} color={!mission.is_completed ? colors.neutral80 : colors.blue100} />
                                     </TouchableOpacity>
                                 );
                             })

@@ -77,42 +77,45 @@ export default function DetailsJorney({ journey }: { journey?: JourneyProps }) {
                 <View
                     style={styles.masterPlayer}>
                     <View style={styles.masterContent}>
-                        <Image source={ImagePlayer} style={styles.imgAvatar} />
+                        <Image source={ImagePlayer || journey?.users[0].avatar_url} style={styles.imgAvatar} />
 
                         <View>
-                            <GlobalText variant="semibold" style={styles.textMaster}>Mestre Foda</GlobalText>
-                            <GlobalText style={styles.subTextMaster}>1231 XP</GlobalText>
+                            <GlobalText variant="semibold" style={styles.textMaster}>{journey?.users[0].name}</GlobalText>
+                            <GlobalText style={styles.subTextMaster}>{journey?.users[0].xp} XP</GlobalText>
                         </View>
                     </View>
                     <Image source={ImageCrown} style={styles.imgCrown} />
                 </View>
             </View>
-            <View>
-                <GlobalText variant="semibold" style={styles.titleList}>Jogadores</GlobalText>
-                <View style={styles.listPlayers}>
-                    {players.map((player, index) => {
-                        const isLast = index === players.length - 1;
-                        return (
-                            <View
-                                key={index}
-                                style={[
-                                    styles.itemPlayer,
-                                    isLast && { borderBottomWidth: 0 }
-                                ]}
-                            >
+            {journey?.users.slice(1).length !== 0 ? (
+                <View>
+                    <GlobalText variant="semibold" style={styles.titleList}>Jogadores</GlobalText>
+                    <View style={styles.listPlayers}>
+                        {journey?.users.slice(1).map((player, index) => {
+                            const isLast = index === journey?.users.slice(1).length - 1;
+                            return (
+                                <View
+                                    key={index}
+                                    style={[
+                                        styles.itemPlayer,
+                                        isLast && { borderBottomWidth: 0 }
+                                    ]}
+                                >
 
-                                <Image source={player.avatar} style={styles.imgAvatar} />
+                                    <Image source={player.avatar_url || ImagePlayer} style={styles.imgAvatar} />
 
-                                <View>
-                                    <GlobalText variant="semibold">{player.name}</GlobalText>
-                                    <GlobalText style={styles.textXp}>{player.xp} XP</GlobalText>
+                                    <View>
+                                        <GlobalText variant="semibold">{player.name}</GlobalText>
+                                        <GlobalText style={styles.textXp}>{player.xp} XP</GlobalText>
+                                    </View>
                                 </View>
-                            </View>
-                        );
-                    })}
+                            );
+                        })}
+                    </View>
                 </View>
-            </View>
-
+            )
+            :
+            (<></>)}
             {/* Danger Zone */}
             <Button color={colors.red90} colorBorder={colors.red100} colorText={colors.withe100} icon='HeartCrack'>
                 Sair da Jornada
