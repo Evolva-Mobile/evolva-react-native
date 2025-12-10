@@ -12,7 +12,7 @@ export default function MainRoutes() {
 
   return (
     <>
-      {user ? <AppRoutes /> : <AuthRoutes />}
+      {!user ? <AppRoutes /> : <AuthRoutes />}
     </>
   );
 }

@@ -8,16 +8,17 @@ import { colors } from "@/src/styles/theme";
 import { Icon } from "@/src/components/ui/Icon";
 import { useState } from "react";
 import { JourneyProps } from "../main-journey/type";
+import DetailMissionModal from "@/src/components/layout/journeyDetailMissionModal";
 
 
 export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
     const [visible, setVisible] = useState(false);
 
-    // const missions = [
-    //     { title: "Tirar Lixo", days: "10", xp: 4123, status: false },
-    //     { title: "Lavar Louça", days: "10", xp: 1231, status: true },
-    //     { title: "Teste", days: "10", xp: 1231, status: true },
-    // ];
+    const missions = [
+        { title: "Tirar Lixo", days: "10", xp: 4123, status: false },
+        { title: "Lavar Louça", days: "10", xp: 1231, status: true },
+        { title: "Teste", days: "10", xp: 1231, status: true },
+    ];
 
     return (
         <View style={{ flex: 1, backgroundColor: "#FFF" }}>
@@ -43,8 +44,8 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
 
                     <View style={styles.listMission}>
                         {journey?.tasks.length !== 0 ? (
-                            journey?.tasks.map((mission, index) => {
-                                const isLast = index === journey?.tasks.length - 1;
+                            missions.map((mission, index) => {
+                                const isLast = index === missions.length - 1;
                                 return (
                                     <TouchableOpacity
                                         activeOpacity={0.8}
@@ -64,22 +65,16 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
                                                     {mission.title}
                                                 </GlobalText>
                                                 <View style={styles.sameTextPlace}>
-                                                    {/* <View style={styles.samePlace}>
-                                                        <Icon name="Clock10" size={16} color={colors.gray100} />
-                                                        <GlobalText style={styles.text}>
-                                                            {mission.deadline} Dias
-                                                        </GlobalText>
-                                                    </View> */}
                                                     <View style={styles.samePlace}>
-                                                        <Icon name="Stars" size={16} color={colors.gray100} />
-                                                        <GlobalText style={styles.text}>
-                                                            {mission.xp_reward} XP
-                                                        </GlobalText>
+                                                        <Icon name="Clock10" size={16} color={colors.gray100} />
+                                                        {/* <GlobalText style={styles.text}>
+                                                            {mission.deadline} Dias
+                                                        </GlobalText>  */}
                                                     </View>
                                                 </View>
                                             </View>
                                         </View>
-                                        <Icon name={!mission.is_completed ? "CircleDashed" : "CircleDotDashed"} size={20} color={!mission.is_completed ? colors.neutral80 : colors.blue100} />
+                                        {/* <Icon name={!mission.is_completed ? "CircleDashed" : "CircleDotDashed"} size={20} color={!mission.is_completed ? colors.neutral80 : colors.blue100} /> */}
                                     </TouchableOpacity>
                                 );
                             })
@@ -95,7 +90,7 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
                         )}
                     </View>
 
-                    {/* <DetailMissionModal visible={visible} setVisible={setVisible}/> */}
+                    <DetailMissionModal visible={visible} setVisible={setVisible} />
                 </View>
             </ScrollView>
         </View>
