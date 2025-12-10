@@ -1,15 +1,17 @@
-import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from 'react';
 
 // Importando telas
-import LoginScreen from '../screens/auth/login';
-import PageInitial from '../screens/page-initial';
 import RegisterScreen from '../screens/auth/create-account';
 import ForgotPassword from '../screens/auth/forgot-password';
-import EditUserScreen from '../screens/user/edit-account';
-import SettingsUserScreen from '../screens/user/settings';
+import LoginScreen from '../screens/auth/login';
 import PageAccount from '../screens/auth/page-account';
+import HomeScreen from '../screens/home';
+import JourneysScreen from '../screens/journeys';
+import PageInitial from '../screens/page-initial';
+import EditUserScreen from '../screens/user/edit-account';
 import ProfileScreen from '../screens/user/profile';
+import SettingsUserScreen from '../screens/user/settings';
 
 // Definindo tipos das rotas
 export type RootStackParamList = {
@@ -22,6 +24,8 @@ export type RootStackParamList = {
   EditUser: undefined;
   PageAccount: undefined;
   Profile: undefined;
+  Home: undefined;
+  Journeys: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -46,6 +50,8 @@ const AppRoutes: React.FC = () => {
       <Stack.Screen name='Settings' component={SettingsUserScreen} />
       <Stack.Screen name='EditUser' component={EditUserScreen} />
       <Stack.Screen name='Profile' component={ProfileScreen} />
+      <Stack.Screen name='Home' component={HomeScreen} />
+      <Stack.Screen name='Journeys' component={JourneysScreen} />
     </Stack.Navigator>
   );
 }
