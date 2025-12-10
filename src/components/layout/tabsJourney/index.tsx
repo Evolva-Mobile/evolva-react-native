@@ -15,8 +15,9 @@ import ImageMore from '@/assets/images/components/tabs/more.png'
 
 import { colors } from '@/src/styles/theme';
 import RegisterMissionScreen from '@/src/screens/journey/create-mission';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { JourneyProps } from '@/src/screens/journey/main-journey/type';
+import { AuthContext } from '@/src/contexts/AuthContext';
 
 
 const Tab = createBottomTabNavigator();
@@ -25,9 +26,12 @@ type TabsJourneyProps = {
     journey?: JourneyProps
 }
 export default function TabsJorney({ journey }: TabsJourneyProps) {
-    useEffect(() => {
-        console.log(journey);
-    }, [])
+    const { user } = useContext(AuthContext);
+    const loggedUser = journey?.users?.find(
+        (u) => u.id === user?.id
+    );
+
+    const isMaster = loggedUser?.pivot?.is_master === 1;
     return (
         <Tab.Navigator
             screenOptions={{
@@ -105,23 +109,25 @@ export default function TabsJorney({ journey }: TabsJourneyProps) {
                 }}
             />
 
-            <Tab.Screen
-                name="Missions"
-                component={RegisterMissionScreen}
+            {isMaster && (
+                <Tab.Screen
+                    name="Missions"
+                    component={RegisterMissionScreen}
 
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <View
-                            style={[styles.iconBackground, { backgroundColor: focused ? "#FFFFDD20" : "transparent", borderColor: focused ? colors.primary : "transparent" }]}
-                        >
-                            <Image
-                                source={ImageMission}
-                                style={styles.img}
-                            />
-                        </View>
-                    )
-                }}
-            />
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <View
+                                style={[styles.iconBackground, { backgroundColor: focused ? "#FFFFDD20" : "transparent", borderColor: focused ? colors.primary : "transparent" }]}
+                            >
+                                <Image
+                                    source={ImageMission}
+                                    style={styles.img}
+                                />
+                            </View>
+                        )
+                    }}
+                />
+            )}
 
             <Tab.Screen
                 name="More"
@@ -138,7 +144,7 @@ export default function TabsJorney({ journey }: TabsJourneyProps) {
                     )
                 }}
             >
-                
+
                 {() => <MoreScreen journey={journey} />}
             </Tab.Screen>
         </Tab.Navigator>
