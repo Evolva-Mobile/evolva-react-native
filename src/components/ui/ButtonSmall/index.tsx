@@ -6,16 +6,14 @@ import { Icon } from "../Icon";
 import * as Icons from "lucide-react-native";
 
 type ButtonProps = {
-  children: ReactNode;
   color?: "primary" | "secondary" | "neutral" | string;
   colorBorder?: string;
   colorText?: string;
-  icon?: keyof typeof Icons;
+  icon: keyof typeof Icons;
   onPress?: () => void;
 }
 
-export function Button({
-  children,
+export function ButtonSmall({
   color = "primary",
   colorText,
   icon,
@@ -33,10 +31,10 @@ export function Button({
     (color === "primary"
       ? colors.yellow100
       : color === "secondary"
-      ? colors.brown100
-      : color === "neutral"
-      ? colors.gray90
-      : colors.gray90);
+        ? colors.brown100
+        : color === "neutral"
+          ? colors.gray90
+          : colors.gray90);
 
   const outerBorderColor =
     color === "neutral"
@@ -48,8 +46,8 @@ export function Button({
     (color === "neutral"
       ? colors.neutral100
       : color === "primary"
-      ? colors.neutral100
-      : colors.withe100);
+        ? colors.neutral100
+        : colors.withe100);
 
 
   const translate = useRef(new Animated.Value(0)).current;
@@ -94,7 +92,6 @@ export function Button({
       onPress={onPress}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
-      style={{ width: "100%" }}
     >
       <Animated.View
         style={[
@@ -102,24 +99,13 @@ export function Button({
           {
             backgroundColor,
             borderColor: outerBorderColor,
-            borderWidth: color === "neutral" ? 2 : 0,
             borderBottomWidth: border,
             borderBottomColor: bottomBorderColor,
-            justifyContent: icon ? "space-between" : "center",
             transform: [{ translateY: translate }],
           },
         ]}
       >
-        <GlobalText
-          variant="bold"
-          style={[styles.text, { color: effectiveTextColor }]}
-        >
-          {children}
-        </GlobalText>
-
-        {icon && (
-          <Icon name={icon} color={effectiveTextColor} />
-        )}
+        <Icon name={icon} color={bottomBorderColor} />
       </Animated.View>
     </Pressable>
   );
@@ -127,14 +113,12 @@ export function Button({
 
 const styles = StyleSheet.create({
   btnContainer: {
-    borderRadius: 24,
-    paddingHorizontal: 30,
-    paddingVertical: 14,
+    borderRadius: 18,
     height: 64,
-    flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    width: "100%",
+    justifyContent: "center",
+    width: 64,
+    borderWidth: 2,
   },
   text: {
     textAlign: "center",

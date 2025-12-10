@@ -4,9 +4,8 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 16,
-        paddingBottom: 24,
-        paddingTop: 28,
+        paddingHorizontal: 24,
+        paddingVertical: 24,
         justifyContent: 'space-between',
     },
 
@@ -33,8 +32,8 @@ export const styles = StyleSheet.create({
         width: 110,
         height: 110,
     },
-    actionChoice:{
-        width: 158 
+    actionChoice: {
+        width: 158
     },
 
     formUser: {

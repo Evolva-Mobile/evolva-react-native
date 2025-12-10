@@ -1,52 +1,18 @@
-import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
-// Importando telas
-import LoginScreen from '../screens/auth/login';
-import PageInitial from '../screens/page-initial';
-import RegisterScreen from '../screens/auth/create-account';
-import ForgotPassword from '../screens/auth/forgot-password';
-import EditUserScreen from '../screens/user/edit-account';
-import SettingsUserScreen from '../screens/user/settings';
-import PageAccount from '../screens/auth/page-account';
-import ProfileScreen from '../screens/user/profile';
+import AuthRoutes from "./auth.routes";
+import AppRoutes from "./app.routes";
 
-// Definindo tipos das rotas
-export type RootStackParamList = {
-  Login: undefined;
-  Register: undefined;
-  ForgotPassword: undefined;
-  Details: { itemId: number; otherParam?: string }; // com parâmetros
-  PageInitial: undefined;
-  Settings: undefined;
-  EditUser: undefined;
-  PageAccount: undefined;
-  Profile: undefined;
-};
+export default function MainRoutes() {
+  const { user, loading } = useContext(AuthContext);
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+  if (loading) return null;
 
-const AppRoutes: React.FC = () => {
   return (
-    <Stack.Navigator
-      initialRouteName="PageInitial"
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: '#FFF' }
-      }}>
-      {/* Pagina Inicial */}
-      <Stack.Screen name="PageInitial" component={PageInitial} />
-
-      {/* Auth */}
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name='Register' component={RegisterScreen} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-      <Stack.Screen name="PageAccount" component={PageAccount} />
-      {/* User */}
-      <Stack.Screen name='Settings' component={SettingsUserScreen} />
-      <Stack.Screen name='EditUser' component={EditUserScreen} />
-      <Stack.Screen name='Profile' component={ProfileScreen} />
-    </Stack.Navigator>
+    <>
+      {user ? <AppRoutes /> : <AuthRoutes />}
+    </>
   );
 }
-export default AppRoutes

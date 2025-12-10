@@ -10,5 +10,5 @@ interface IconProps {
 
 export const Icon: React.FC<IconProps> = ({ name, color = colors.neutral100, size = 24 }) => {
     const LucideIcon = Icons[name];
-    return <LucideIcon color={color} size={size} />;
+    return <LucideIcon color={color} size={size} style={{ flexShrink: 0 }}/>;
 };

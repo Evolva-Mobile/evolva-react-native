@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import AppRoutes from "../routes";
-import { useFonts, WorkSans_400Regular, WorkSans_500Medium, WorkSans_700Bold, WorkSans_600SemiBold } from "@expo-google-fonts/work-sans";
 import { Oldenburg_400Regular } from "@expo-google-fonts/oldenburg";
+import { useFonts, WorkSans_400Regular, WorkSans_500Medium, WorkSans_600SemiBold, WorkSans_700Bold } from "@expo-google-fonts/work-sans";
 import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 import Toast from "react-native-toast-message";
 import { CustomToast } from "../components/ui/Toast";
-
+import MainRoutes from "../routes";
+import { AuthProvider } from "../contexts/AuthContext";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -26,7 +26,10 @@ export default function App() {
 
   return (
     <>
-      <AppRoutes />
+      <AuthProvider>
+        <MainRoutes />
+      </AuthProvider>
+
       <Toast
         config={{
           success: CustomToast.success,
@@ -38,6 +41,7 @@ export default function App() {
         autoHide
         position="top"
       />
+
     </>
   );
 }

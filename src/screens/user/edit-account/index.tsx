@@ -94,10 +94,6 @@ export default function EditUserScreen() {
         getUser()
     }, [])
 
-    useEffect(() => {
-        console.log(selectedAvatar);
-
-    }, [selectedAvatar])
     return (
         <View style={styles.container}>
             <View>

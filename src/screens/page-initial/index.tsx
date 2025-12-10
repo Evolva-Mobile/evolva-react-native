@@ -7,11 +7,16 @@ import { Image, TouchableOpacity, View } from "react-native";
 import { styles } from '../page-initial/style';
 import { GlobalText } from "@/src/components/ui/GlobalText";
 import { useAppNavigation } from "@/src/utils/navigation";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PageInitial() {
     const [step, setStep] = useState(1);
     const navigation = useAppNavigation();
+
+    const handleEnter = async () => {
+        await AsyncStorage.setItem("@onboarding_seen", "true");
+        navigation.navigate('PageAccount')
+    };
 
     const renderCurrentPage = () => {
         switch (step) {
@@ -110,7 +115,7 @@ export default function PageInitial() {
                                 </GlobalText>
                             </View>
 
-                            <Button color="primary" onPress={() => navigation.navigate('PageAccount')} >
+                            <Button color="primary" onPress={handleEnter} >
                                 Próximo
                             </Button>
                         </View>
