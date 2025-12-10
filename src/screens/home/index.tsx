@@ -9,10 +9,13 @@ import { Icon } from "@/src/components/ui/Icon";
 import { colors } from "@/src/styles/theme";
 import { useAppNavigation } from "@/src/utils/navigation";
 
+import HandshakeIcon from "@/assets/images/home_page/handshake.png";
+import CastleImg from "@/assets/images/home_page/inicial_castle.png";
+import SearchImg from "@/assets/images/home_page/lupa.png";
+import FeatherImg from "@/assets/images/home_page/pena.png";
 import LevelIcon from "@/assets/images/perfil/crown.png";
 import JourneyOneIcon from "@/assets/images/principal/castle.png";
 import CoinsIcon from "@/assets/images/principal/coin.png";
-import HandshakeIcon from "@/assets/images/principal/high-five.png";
 import JourneyTwoIcon from "@/assets/images/principal/viking-helmet.png";
 
 import { styles } from "./style";
@@ -276,11 +279,19 @@ export default function Home() {
                                     ]}
                                     onPress={action.onPress}
                                 >
-                                    <Icon
-                                        name={action.icon}
-                                        size={24}
-                                        color={isActive ? colors.withe100 : colors.gray100}
-                                    />
+                                    {action.id === 'home' ? (
+                                        <Image source={CastleImg} style={{ width: 24, height: 24 }} />
+                                    ) : action.id === 'search' ? (
+                                        <Image source={SearchImg} style={{ width: 24, height: 24 }} />
+                                    ) : action.id === 'quests' ? (
+                                        <Image source={FeatherImg} style={{ width: 24, height: 24 }} />
+                                    ) : (
+                                        <Icon
+                                            name={action.icon}
+                                            size={24}
+                                            color={isActive ? colors.withe100 : colors.gray100}
+                                        />
+                                    )}
                                 </TouchableOpacity>
                             );
                         })}
