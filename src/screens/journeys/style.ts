@@ -102,6 +102,7 @@ export const styles = StyleSheet.create({
   codeModalContent: {
     width: "100%",
     gap: 14,
+    alignItems: "center",
   },
   codeTitle: {
     fontSize: 18,
@@ -122,6 +123,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.withe100,
     paddingHorizontal: 12,
     paddingVertical: 10,
+    width: "100%",
   },
   codeInput: {
     flex: 1,

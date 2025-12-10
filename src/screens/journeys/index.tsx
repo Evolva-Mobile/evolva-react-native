@@ -1,3 +1,5 @@
+import KeyImg from '@/assets/images/home_page/key.png';
+import OpenBookImg from '@/assets/images/home_page/opne_book.png';
 import JourneyOneIcon from '@/assets/images/principal/castle.png';
 import JourneyTwoIcon from '@/assets/images/principal/viking-helmet.png';
 import { Button } from '@/src/components/ui/Button';
@@ -76,13 +78,13 @@ export default function JourneysScreen() {
       <View style={styles.bottomCtaWrapper}>
         <TouchableOpacity style={styles.bottomCta} activeOpacity={0.92} onPress={() => setShowCodeModal(true)}>
           <GlobalText variant="bold" style={styles.bottomCtaText}>Insira o código</GlobalText>
-          <Icon name="Sparkles" color={colors.withe100} />
+          <Image source={KeyImg} style={{ width: 22, height: 22 }} />
         </TouchableOpacity>
       </View>
 
       <GlobalModal visible={showCodeModal} onRequestClose={() => setShowCodeModal(false)} onClose={() => setShowCodeModal(false)} contentStyle={{ width: '100%' }}>
         <View style={styles.codeModalContent}>
-          <Icon name="PartyPopper" color={colors.primary} size={28} />
+          <Image source={OpenBookImg} style={{ width: 40, height: 40 }} />
           <GlobalText variant="bold" style={styles.codeTitle}>Código da Jornada</GlobalText>
           <GlobalText style={styles.codeSubtitle}>Você precisa digitar ou escanear o código válido de uma jornada</GlobalText>
 
