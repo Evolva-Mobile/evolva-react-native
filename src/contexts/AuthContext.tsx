@@ -1,8 +1,20 @@
 import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+type userProps = {
+  id: number;
+  name: string;
+  email: string;
+  avatar_url: string | null;
+  coins: number;
+  email_verified_at: string | null;
+  created_at: string;
+  updated_at: string;
+  xp: number;
+  level: number;
+}
 type AuthContextProps = {
-  user: any;
+  user: userProps | null;
   loading: boolean;
   login: (userData: any) => Promise<void>;
   logout: () => Promise<void>;
@@ -11,8 +23,8 @@ type AuthContextProps = {
 export const AuthContext = createContext<AuthContextProps>({
   user: null,
   loading: true,
-  login: async () => {},
-  logout: async () => {},
+  login: async () => { },
+  logout: async () => { },
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {

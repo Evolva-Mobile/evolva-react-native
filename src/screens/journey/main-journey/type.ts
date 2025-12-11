@@ -28,7 +28,21 @@ export type JourneyProps = {
         };
     }[];
 
-    tasks: any[]; 
+    tasks: {
+        id: number;
+        journey_id: number;
+        created_by: number;
+        title: string;
+        description: string | null;
+        type: "normal" | "daily" | "weekly" | string; // pode ajustar se quiser
+        xp_reward: number;
+        coin_reward: number;
+        deadline: string | null; // vem null ou "2025-12-12T00:00:00.000000Z"
+        is_completed: boolean;
+        requires_proof: boolean;
+        created_at: string;
+        updated_at: string;
+    }[];
 
     store: {
         id: number;

@@ -62,7 +62,7 @@ export default function RegisterMissionScreen() {
         try {
             const response = await PostRequest(TASK.CREATE(), task);
 
-            if (response.success) {
+            if (response) {
                 showToast.success(response.message)
                 clearFilds();
             } else {
