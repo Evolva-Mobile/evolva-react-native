@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 export default function AppRoutes() {
     return (
         <Stack.Navigator 
-        initialRouteName="Journey"
+        initialRouteName="Profile"
         screenOptions={{
             headerShown: false,
             contentStyle: { backgroundColor: '#FFF' }

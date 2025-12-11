@@ -12,7 +12,7 @@ import { colors } from "@/src/styles/theme";
 import { useAppNavigation } from "@/src/utils/navigation";
 import { showToast } from "@/src/utils/toastShow";
 import { useContext, useState } from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 
 export default function SettingsUserScreen() {
@@ -21,7 +21,7 @@ export default function SettingsUserScreen() {
 
     const [visible, setVisible] = useState(false);
     const handleSubmit = async () => {
-    
+
         try {
             const response = await PostRequest(USER.LOGOUT())
             if (response) {
@@ -36,28 +36,35 @@ export default function SettingsUserScreen() {
         }
     }
     return (
-        <View style={styles.container}>
-            <View>
-                <HeaderBack title={"Configurações"} onPress={navigation.goBack} />
-
-                <View style={styles.containerSettings}>
-                    <GlobalText variant="semibold" style={styles.settingsTitleList}>Gerais:</GlobalText>
-                    <View style={styles.settingsList}>
-                        <TouchableOpacity style={styles.itemList} onPress={() => navigation.navigate('EditUser')}>
-                            <GlobalText variant="medium" style={styles.itemListText}>Editar conta</GlobalText>
-                            <Icon name={'Pen'} size={20} color={colors.neutral90} />
-                        </TouchableOpacity>
-                        <View style={styles.itemListLast}>
-                            <GlobalText variant="medium" style={styles.itemListText}>Tema</GlobalText>
-                            <Icon name={'Moon'} size={20} color={"#1CB0F6"} />
+        <View style={{ flex: 1 }}>
+            <HeaderBack title={"Configurações"} onPress={navigation.goBack} />
+            <View style={styles.container}>
+                <ScrollView
+                    contentContainerStyle={{
+                        gap: 24,
+                        backgroundColor: "#FFF",
+                    }}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <View style={styles.containerSettings}>
+                        <GlobalText variant="semibold" style={styles.settingsTitleList}>Gerais:</GlobalText>
+                        <View style={styles.settingsList}>
+                            <TouchableOpacity style={styles.itemList} onPress={() => navigation.navigate('EditUser')}>
+                                <GlobalText variant="medium" style={styles.itemListText}>Editar conta</GlobalText>
+                                <Icon name={'Pen'} size={20} color={colors.neutral90} />
+                            </TouchableOpacity>
+                            <View style={styles.itemListLast}>
+                                <GlobalText variant="medium" style={styles.itemListText}>Tema</GlobalText>
+                                <Icon name={'Moon'} size={20} color={"#1CB0F6"} />
+                            </View>
                         </View>
                     </View>
-                </View>
-            </View>
-            <Button color={colors.red90} colorBorder={colors.red100} colorText={colors.withe100} onPress={() => setVisible(true)} icon='DoorClosed'>
-                Sair
-            </Button>
+                </ScrollView>
 
+                <Button color={colors.red90} colorBorder={colors.red100} colorText={colors.withe100} onPress={() => setVisible(true)} icon='DoorClosed'>
+                    Sair
+                </Button>
+            </View>
             <GlobalModal
                 visible={visible}
                 onClose={() => setVisible(false)}
@@ -75,9 +82,6 @@ export default function SettingsUserScreen() {
                 </View>
                 <Button color="neutral" onPress={handleSubmit}>Confirmar</Button>
             </GlobalModal>
-
-
-
         </View >
     );
 }

@@ -8,9 +8,10 @@ import QRCode from 'react-native-qrcode-svg';
 import { colors } from "@/src/styles/theme";
 import { Button } from "@/src/components/ui/Button";
 import { ButtonSmall } from "@/src/components/ui/ButtonSmall"
-import { JourneyProps } from "../main-journey/type"
+import { JourneyResponse } from "../main-journey/type"
 
-export default function DetailsJorney({ journey }: { journey?: JourneyProps }) {
+
+export default function DetailsJorney({ journey }: { journey?: JourneyResponse }) {
     const players = [
         { name: "Eduardo", xp: 12312123, avatar: ImagePlayer },
         { name: "Rodolfo", xp: 55123, avatar: ImagePlayer },
@@ -33,7 +34,7 @@ export default function DetailsJorney({ journey }: { journey?: JourneyProps }) {
                     style={styles.imgAvatarJourney}
                 />
                 <GlobalText variant="medium" style={styles.descJourney}>
-                    {journey?.description ?? "Sem descrição"}
+                    {journey?.data.description ?? "Sem descrição"}
                 </GlobalText>
             </View>
 
@@ -45,7 +46,7 @@ export default function DetailsJorney({ journey }: { journey?: JourneyProps }) {
 
                 <View style={styles.bodyCode}>
                     <QRCode
-                        value={journey?.join_code}
+                        value={journey?.data.join_code}
                     />
                 </View>
 
@@ -57,7 +58,7 @@ export default function DetailsJorney({ journey }: { journey?: JourneyProps }) {
 
                 <View style={styles.bodyTextCode}>
                     <GlobalText variant="semibold" style={styles.textCode}>
-                        {journey?.join_code}
+                        {journey?.data.join_code}
                     </GlobalText>
                 </View>
 
@@ -77,22 +78,22 @@ export default function DetailsJorney({ journey }: { journey?: JourneyProps }) {
                 <View
                     style={styles.masterPlayer}>
                     <View style={styles.masterContent}>
-                        <Image source={ImagePlayer || journey?.users[0].avatar_url} style={styles.imgAvatar} />
+                        <Image source={ImagePlayer || journey?.data.members[0].avatar} style={styles.imgAvatar} />
 
                         <View>
-                            <GlobalText variant="semibold" style={styles.textMaster}>{journey?.users[0].name}</GlobalText>
-                            <GlobalText style={styles.subTextMaster}>{journey?.users[0].xp} XP</GlobalText>
+                            <GlobalText variant="semibold" style={styles.textMaster}>{journey?.data.members[0].name}</GlobalText>
+                            <GlobalText style={styles.subTextMaster}>{journey?.data.members[0].id} XP</GlobalText>
                         </View>
                     </View>
                     <Image source={ImageCrown} style={styles.imgCrown} />
                 </View>
             </View>
-            {journey?.users.slice(1).length !== 0 ? (
+            {journey?.data.members.slice(1).length !== 0 ? (
                 <View>
                     <GlobalText variant="semibold" style={styles.titleList}>Jogadores</GlobalText>
                     <View style={styles.listPlayers}>
-                        {journey?.users.slice(1).map((player, index) => {
-                            const isLast = index === journey?.users.slice(1).length - 1;
+                        {journey?.data.members.slice(1).map((player, index) => {
+                            const isLast = index === journey?.data.members.slice(1).length - 1;
                             return (
                                 <View
                                     key={index}
@@ -102,7 +103,7 @@ export default function DetailsJorney({ journey }: { journey?: JourneyProps }) {
                                     ]}
                                 >
 
-                                    <Image source={player.avatar_url || ImagePlayer} style={styles.imgAvatar} />
+                                    <Image source={player.avatar || ImagePlayer} style={styles.imgAvatar} />
 
                                     <View>
                                         <GlobalText variant="semibold">{player.name}</GlobalText>

@@ -15,23 +15,24 @@ import ImageMore from '@/assets/images/components/tabs/more.png'
 
 import { colors } from '@/src/styles/theme';
 import RegisterMissionScreen from '@/src/screens/journey/create-mission';
-import { useContext, useEffect } from 'react';
-import { JourneyProps } from '@/src/screens/journey/main-journey/type';
+import { useContext } from 'react';
+
 import { AuthContext } from '@/src/contexts/AuthContext';
+import { JourneyResponse } from '@/src/screens/journey/main-journey/type';
 
 
 const Tab = createBottomTabNavigator();
 
 type TabsJourneyProps = {
-    journey?: JourneyProps
+    journey?: JourneyResponse
 }
 export default function TabsJorney({ journey }: TabsJourneyProps) {
     const { user } = useContext(AuthContext);
-    const loggedUser = journey?.users?.find(
+    const loggedUser = journey?.data.members?.find(
         (u) => u.id === user?.id
     );
 
-    const isMaster = loggedUser?.pivot?.is_master === 1;
+    const isMaster = loggedUser?.is_master
     return (
         <Tab.Navigator
             screenOptions={{

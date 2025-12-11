@@ -7,18 +7,24 @@ import HomeRank from "@/src/components/layout/journeyRank";
 import { colors } from "@/src/styles/theme";
 import { Icon } from "@/src/components/ui/Icon";
 import { useState } from "react";
-import { JourneyProps } from "../main-journey/type";
 import DetailMissionModal from "@/src/components/layout/journeyDetailMissionModal";
+import { JourneyResponse } from "../main-journey/type";
 
 
-export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
+export default function HomeJourney({ journey }: { journey?: JourneyResponse }) {
     const [visible, setVisible] = useState(false);
+    const [selectedMissionId, setSelectedMissionId] = useState<number | null>(null);
 
     const missions = [
         { title: "Tirar Lixo", days: "10", xp: 4123, status: false },
         { title: "Lavar Louça", days: "10", xp: 1231, status: true },
         { title: "Teste", days: "10", xp: 1231, status: true },
     ];
+
+    const handlePressMission = (missionId: number) => {
+        setVisible(true);
+        setSelectedMissionId(missionId);
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: "#FFF" }}>
@@ -37,7 +43,7 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
                     <Image source={ImageAvatar} style={styles.imgAvatarJourney} />
 
                     <GlobalText variant="medium" style={styles.descJourney}>
-                        {journey?.description ?? "Sem descrição"}
+                        {journey?.data.description ?? "Sem descrição"}
                     </GlobalText>
                 </View>
 
@@ -45,20 +51,20 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
 
                 {/* Lista de Missões */}
                 <View>
-                    {journey?.tasks.length !== 0 ? (
+                    {journey?.data.tasks.length !== 0 ? (
                         <>
                             <GlobalText variant="bold" style={styles.title}>
                                 Missões
                             </GlobalText>
 
                             <View style={styles.listMission}>
-                                {journey?.tasks.map((mission, index) => {
-                                    const isLast = index === journey.tasks.length - 1;
+                                {journey?.data.tasks.map((mission, index) => {
+                                    const isLast = index === journey.data.tasks.length - 1;
 
                                     return (
                                         <TouchableOpacity
                                             activeOpacity={0.8}
-                                            onPress={() => setVisible(true)}
+                                            onPress={() => handlePressMission(mission.id)}
                                             key={index}
                                             style={[
                                                 styles.itemMission,
@@ -89,7 +95,7 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
                                                                 color={colors.gray100}
                                                             />
                                                             <GlobalText style={styles.text}>
-                                                                {mission.deadline} Dias
+                                                                {Math.floor(mission.days_remaining)} Dia(s) restante(s)
                                                             </GlobalText>
                                                         </View>
                                                     </View>
@@ -98,13 +104,13 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
 
                                             <Icon
                                                 name={
-                                                    !mission.is_completed
+                                                    !mission.have_assigned_person
                                                         ? "CircleDashed"
                                                         : "CircleDotDashed"
                                                 }
                                                 size={20}
                                                 color={
-                                                    !mission.is_completed
+                                                    !mission.have_assigned_person
                                                         ? colors.neutral80
                                                         : colors.blue100
                                                 }
@@ -127,10 +133,11 @@ export default function HomeJourney({ journey }: { journey?: JourneyProps }) {
                         )
                     }
 
-                    <DetailMissionModal visible={visible} setVisible={setVisible} />
+                        <DetailMissionModal visible={visible} setVisible={setVisible} mssionId={selectedMissionId}/>
                 </View>
             </ScrollView>
         </View>
 
 
-)}
+    )
+}
