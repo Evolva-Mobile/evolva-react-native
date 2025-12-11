@@ -7,6 +7,7 @@ import PageInitial from "../screens/page-initial";
 import LoginScreen from "../screens/auth/login";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CreateJourney from "../screens/journey/create-journey";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,9 @@ export default function AuthRoutes() {
     if (showInitial === null) return null;
 
     return (
-        <Stack.Navigator screenOptions={{
+        <Stack.Navigator
+        initialRouteName="CreateJourney"
+         screenOptions={{
             headerShown: false,
             contentStyle: { backgroundColor: '#FFF' }
         }}>
@@ -39,6 +42,7 @@ export default function AuthRoutes() {
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name='Register' component={RegisterScreen} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name='CreateJourney' component={CreateJourney} />
 
         </Stack.Navigator>
     );
