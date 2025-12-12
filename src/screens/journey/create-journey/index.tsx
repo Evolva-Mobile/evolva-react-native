@@ -5,12 +5,12 @@ import { GlobalText } from "@/src/components/ui/GlobalText";
 import { InputText } from "@/src/components/ui/InputText";
 import { InputToggle } from "@/src/components/ui/InputToggle";
 import { GlobalModal } from "@/src/components/ui/Modal";
-import { avatarList } from "@/src/screens/user/edit-account/avatarList";
 import { colors } from "@/src/styles/theme";
 import { useAppNavigation } from "@/src/utils/navigation";
 import { useState } from "react";
 import { Image, ImageSourcePropType, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { brasaoList } from "./brasaoList";
 import { styles } from "./style";
 
 type userProps = {
@@ -122,9 +122,9 @@ function ModalChoiceImg({ visible, setVisible, onConfirm }: ModalChoiceImgProps)
                 gap: 12,
                 alignItems: 'center'
             }}>
-                <GlobalText variant="bold" style={{ fontSize: 20 }}>Escolha um avatar</GlobalText>
+                <GlobalText variant="bold" style={{ fontSize: 20 }}>Escolha um brasão</GlobalText>
                 <GlobalText variant="medium" style={{ fontSize: 16, textAlign: 'center', color: colors.neutral80 }}>
-                    Esta foto sera exibida em seu perfil
+                    Escolha uma foto para sua jornada
                 </GlobalText>
             </View>
             <ScrollView style={{
@@ -138,7 +138,7 @@ function ModalChoiceImg({ visible, setVisible, onConfirm }: ModalChoiceImgProps)
                     gap: 4,
                     justifyContent: "center"
                 }}>
-                    {avatarList.map((img, index) => (
+                    {brasaoList.map((img, index) => (
                         <TouchableOpacity key={index} onPress={() => setSelected(img)}>
                             <Image
                                 source={img}
