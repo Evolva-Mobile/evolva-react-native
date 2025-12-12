@@ -5,7 +5,7 @@ import { InputText } from "@/src/components/ui/InputText";
 import { InputToggle } from "@/src/components/ui/InputToggle";
 import { useAppNavigation } from "@/src/utils/navigation";
 import { useState } from "react";
-import { Image, View } from "react-native";
+import { Image, ImageSourcePropType, View } from "react-native";
 import { styles } from "./style";
 
 type userProps = {
@@ -21,7 +21,7 @@ type ModalChoiceImgProps = {
     setVisible: (value: boolean) => void
 }
 
-type SelectedImgProp = {
+type SelectedImgProp = ImageSourcePropType | {
     width: number,
     uri?: string,
     height: number
@@ -30,11 +30,7 @@ type SelectedImgProp = {
 export default function CreateJourney() {
     const navigation = useAppNavigation();
     const [visible, setVisible] = useState(false);
-    const [selectedAvatar, setSelectedAvatar] = useState<SelectedImgProp>({
-        width: 0,
-        uri: '',
-        height: 0
-    });
+    const [selectedAvatar, setSelectedAvatar] = useState<SelectedImgProp | null>(null);
     const [user, setUser] = useState<userProps>({
         name: "",
         email: "",
@@ -44,7 +40,15 @@ export default function CreateJourney() {
     const [isPrivate, setIsPrivate] = useState(false);
 
     function handleSubmit(): void {
-        throw new Error("Function not implemented.");
+        console.log({ user, isPrivate, selectedAvatar });
+    }
+    let avatarSource: ImageSourcePropType | undefined;
+    if (selectedAvatar) {
+        if (typeof selectedAvatar === 'number') {
+            avatarSource = selectedAvatar;
+        }else if ('uri' in selectedAvatar && (selectedAvatar as any).uri) {
+            avatarSource = { uri: (selectedAvatar as any).uri };
+        }
     }
 
     return (
@@ -54,9 +58,9 @@ export default function CreateJourney() {
 
                 <View style={styles.formUser}>
                     <View style={styles.avatarContainer}>
-                        <Image source={selectedAvatar?.uri ?? ""} style={styles.avatarImg} />
+                        <Image source={avatarSource} style={styles.avatarImg} />
                         <View style={styles.actionChoice}>
-                            <Button color="neutral" icon="ArchiveRestore" onPress={() => setVisible(true)}>Escolher</Button>
+                            <Button color="neutral"  onPress={() => setVisible(true)}>Escolher</Button>
                             {/* <ModalChoiceImg visible={visible} setVisible={setVisible} onConfirm={(img) => setSelectedAvatar(img)} /> */}
                         </View>
                     </View>
