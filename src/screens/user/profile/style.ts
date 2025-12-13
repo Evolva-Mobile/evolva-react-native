@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
         width: '48%',
         paddingHorizontal: 16,
         paddingVertical: 18,
-        borderWidth: 2,
+        borderWidth: 3,
         borderRadius: 20,
         flexDirection: "row",
         gap: 12,
@@ -107,7 +107,7 @@ export const styles = StyleSheet.create({
         borderRadius: 18,
         paddingHorizontal: 16,
         paddingVertical: 8,
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: colors.gray90,
     }
 

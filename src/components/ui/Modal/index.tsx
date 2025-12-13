@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
   },
   content: {
-    padding: 20,
+    padding: 22,
     width: '100%',
     backgroundColor: "white",
-    borderRadius: 12,
+    borderRadius: 18,
     alignItems: 'center',
   },
   closeButtonContainer: {

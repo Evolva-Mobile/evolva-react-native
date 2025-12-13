@@ -4,15 +4,13 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 16,
+        paddingHorizontal: 24,
         paddingBottom: 24,
-        paddingTop: 28,
         justifyContent: 'space-between',
     },
 
     containerSettings: {
         width: '100%',
-        marginTop: 25,
     },
     settingsTitleList: {
         marginBottom: 16,
@@ -25,7 +23,7 @@ export const styles = StyleSheet.create({
         borderRadius: 18,
         paddingHorizontal: 16,
         paddingVertical: 8,
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: colors.gray90,
     },
 
@@ -33,7 +31,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 16,
         borderBottomColor: colors.gray90,
-        borderBottomWidth: 2,
+        borderBottomWidth: 3,
         justifyContent: 'space-between'
     },
     itemListText: {

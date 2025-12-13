@@ -1,0 +1,194 @@
+
+import { HeaderBack } from "@/src/components/layout/headerBack";
+import { Button } from "@/src/components/ui/Button";
+import { GlobalText } from "@/src/components/ui/GlobalText";
+import { InputText } from "@/src/components/ui/InputText";
+import { InputToggle } from "@/src/components/ui/InputToggle";
+import { GlobalModal } from "@/src/components/ui/Modal";
+import { colors } from "@/src/styles/theme";
+import { useAppNavigation } from "@/src/utils/navigation";
+import { useState } from "react";
+import { Image, ImageSourcePropType, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { brasaoList } from "./brasaoList";
+import { styles } from "./style";
+import { PostRequest } from "@/src/config/api-request/PostRequest";
+import { JOURNEY } from "@/src/config/api-routes/journey";
+import { showToast } from "@/src/utils/toastShow";
+
+type journeyrProps = {
+    title: string,
+    description: string
+    is_private: boolean
+    avatar: string
+}
+
+type ModalChoiceImgProps = {
+    visible: boolean,
+    onConfirm: (img: SelectedImgProp) => void,
+    setVisible: (value: boolean) => void
+}
+
+type SelectedImgProp = ImageSourcePropType | {
+    width: number,
+    uri?: string,
+    height: number
+}
+
+export default function CreateJourney() {
+    const navigation = useAppNavigation();
+    const [visible, setVisible] = useState(false);
+    const [selectedAvatar, setSelectedAvatar] = useState<SelectedImgProp | null>(null);
+    const [journey, setJourney] = useState<journeyrProps>({
+        title: "",
+        description: "",
+        is_private: false,
+        avatar: ""
+    })
+    const clearFilds = () => {
+        setJourney({
+            title: "",
+            description: "",
+            is_private: false,
+            avatar: ""
+        })
+    }
+
+    const handleSubmit = async () => {
+        try {
+            const response = await PostRequest(JOURNEY.CREATE(), journey)
+            if (!response) {
+                showToast.error(response.message || "Erro ao criar a jornada.");
+                // getUser();
+            }
+            showToast.success("Jornada criada com sucesso!");
+            clearFilds();
+
+        } catch (error) {
+            console.log("Erro ao editar conta: ", error);
+            showToast.error("Ocorreu um erro inesperado.");
+        }
+    }
+
+    let avatarSource: ImageSourcePropType | undefined;
+
+    if (selectedAvatar) {
+        if (typeof selectedAvatar === 'number') {
+            avatarSource = selectedAvatar;
+        } else if ('uri' in selectedAvatar && (selectedAvatar as any).uri) {
+            avatarSource = { uri: (selectedAvatar as any).uri };
+        }
+    }
+
+    return (
+        <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+            <HeaderBack title={"Criar a jornada"} onPress={navigation.goBack} />
+            <ScrollView
+                contentContainerStyle={styles.containerScroll}
+                showsVerticalScrollIndicator={false}
+            >
+                <View>
+                    <View>
+                        <View style={styles.formUser}>
+                            <View style={styles.avatarContainer}>
+                                <Image source={avatarSource} style={styles.avatarImg} />
+                                <View style={styles.actionChoice}>
+                                    <Button color="neutral" onPress={() => setVisible(true)}>Escolher</Button>
+                                    <ModalChoiceImg visible={visible} setVisible={setVisible} onConfirm={(img) => setSelectedAvatar(img)} />
+                                </View>
+                            </View>
+                            <View style={styles.firtsFilds}>
+                                <InputText
+                                    label="Titulo"
+                                    value={journey.title}
+                                    onChangeText={(text) => setJourney({ ...journey, title: text })}
+                                    icon={"Castle"} />
+                                <InputText
+                                    label="Descrição"
+                                    value={journey.description}
+                                    onChangeText={(text) => setJourney({ ...journey, description: text })}
+                                    icon={"Newspaper"} />
+
+                                <InputToggle
+                                    label="Jornada" labelBold="Privada"
+                                    icon="Lock"
+                                    value={journey.is_private}
+                                    setValue={(e) => setJourney({ ...journey, is_private: e })}
+                                />
+
+                            </View>
+                        </View>
+                    </View>
+
+                    <View style={styles.footerContainer}>
+                        <Button color={"primary"} onPress={handleSubmit}>
+                            Criar Jornada
+                        </Button>
+                    </View>
+                </View>
+            </ScrollView>
+        </View>
+    );
+}
+
+function ModalChoiceImg({ visible, setVisible, onConfirm }: ModalChoiceImgProps) {
+    const [selected, setSelected] = useState<SelectedImgProp | any>({
+        width: 0,
+        uri: '',
+        height: 0
+    });
+
+    const onConfirmAvatar = () => {
+        onConfirm(selected);
+        setVisible(false);
+    }
+
+    return (
+        <GlobalModal
+            visible={visible}
+            onClose={() => setVisible(false)}
+        >
+            <View style={{
+                gap: 12,
+                alignItems: 'center'
+            }}>
+                <GlobalText variant="bold" style={{ fontSize: 20 }}>Escolha um brasão</GlobalText>
+                <GlobalText variant="medium" style={{ fontSize: 16, textAlign: 'center', color: colors.neutral80 }}>
+                    Escolha uma foto para sua jornada
+                </GlobalText>
+            </View>
+            <ScrollView style={{
+                height: 455,
+                marginVertical: 30,
+            }}>
+
+                <View style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    gap: 4,
+                    justifyContent: "center"
+                }}>
+                    {brasaoList.map((img, index) => (
+                        <TouchableOpacity key={index} onPress={() => setSelected(img)}>
+                            <Image
+                                source={img}
+                                style={{
+                                    width: 90,
+                                    height: 90,
+                                    borderRadius: 50,
+                                    borderWidth: 3,
+                                    borderColor: selected === img ? colors.grenn100 : "transparent",
+                                    marginVertical: 10
+                                }}
+                            />
+                        </TouchableOpacity>
+                    ))}
+
+                </View>
+            </ScrollView>
+            <Button color="neutral" onPress={onConfirmAvatar}>Confirmar</Button>
+        </GlobalModal>
+    )
+}
+
+

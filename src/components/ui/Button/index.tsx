@@ -127,10 +127,10 @@ export function Button({
 
 const styles = StyleSheet.create({
   btnContainer: {
-    borderRadius: 50,
+    borderRadius: 24,
     paddingHorizontal: 30,
     paddingVertical: 14,
-    height: 67,
+    height: 64,
     flexDirection: "row",
     alignItems: "center",
     gap: 8,

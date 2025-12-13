@@ -21,6 +21,7 @@ import { ScrollView } from "react-native-gesture-handler";
 type userProps = {
     name: string,
     email: string
+    avatar_url: string
     password: string
     password_confirmation: string
 }
@@ -45,10 +46,12 @@ export default function EditUserScreen() {
         uri: '',
         height: 0
     });
+
     const [user, setUser] = useState<userProps>({
         name: "",
         email: "",
         password: "",
+        avatar_url: "",
         password_confirmation: ""
     })
 
@@ -56,6 +59,7 @@ export default function EditUserScreen() {
         const payload: any = {
             name: user.name,
             email: user.email,
+            avatar_url: user.avatar_url
         };
 
         const password = user.password ?? "";
@@ -65,7 +69,6 @@ export default function EditUserScreen() {
             payload.password = user.password;
             payload.password_confirmation = user.password_confirmation;
         }
-
         try {
             const response = await PatchRequest(USER.UPDATE('1'), payload)
             if (response) {
@@ -84,6 +87,7 @@ export default function EditUserScreen() {
             const response = await GetRequest(USER.GET_USER())
             if (response) {
                 setUser(response)
+                console.log(response)
             }
         } catch (error) {
             console.log("erro ao criar conta: ", error);
@@ -94,10 +98,10 @@ export default function EditUserScreen() {
         getUser()
     }, [])
 
-    useEffect(() => {
-        console.log(selectedAvatar);
+     useEffect(() => {
+        console.log(user)
+    }, [user])
 
-    }, [selectedAvatar])
     return (
         <View style={styles.container}>
             <View>
@@ -105,10 +109,29 @@ export default function EditUserScreen() {
 
                 <View style={styles.formUser}>
                     <View style={styles.avatarContainer}>
-                        <Image source={selectedAvatar?.uri ?? ""} style={styles.avatarImg} />
+                        <Image
+                            source={selectedAvatar.uri
+                                ? { uri: selectedAvatar.uri }
+                                : user.avatar_url
+                                    ? { uri: user.avatar_url }
+                                    : Img
+                            }
+                            style={styles.avatarImg}
+                        />
+
                         <View style={styles.actionChoice}>
-                            <Button color="neutral" icon="ArchiveRestore" onPress={() => setVisible(true)}>Escolher</Button>
-                            <ModalChoiceImg visible={visible} setVisible={setVisible} onConfirm={(img) => setSelectedAvatar(img)} />
+                            <Button color="neutral" onPress={() => setVisible(true)}>Escolher</Button>
+                            <ModalChoiceImg
+                                visible={visible}
+                                setVisible={setVisible}
+                                onConfirm={(img) => {
+                                    setSelectedAvatar(img);
+                                    setUser(prev => ({
+                                        ...prev,
+                                        avatar_url: img.uri || ""
+                                    }));
+                                }}
+                            />
                         </View>
                     </View>
                     <View style={styles.firtsFilds}>
@@ -201,8 +224,8 @@ function ModalChoiceImg({ visible, setVisible, onConfirm }: ModalChoiceImgProps)
                                 key={index}
                                 source={img}
                                 style={{
-                                    width: 100,
-                                    height: 100,
+                                    width: 90,
+                                    height: 90,
                                     borderRadius: 50,
                                     borderWidth: 3,
                                     borderColor: selected === img ? colors.grenn100 : "transparent",
