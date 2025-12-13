@@ -2,11 +2,12 @@ import { colors } from "@/src/styles/theme";
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+     containerScroll: {
+        paddingBottom: 28,
+        gap: 24,
         paddingHorizontal: 24,
-        paddingVertical: 24,
-        justifyContent: 'space-between',
+        paddingTop: 8,
+        backgroundColor: colors.withe100
     },
 
     title: {

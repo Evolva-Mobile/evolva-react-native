@@ -12,12 +12,15 @@ import { Image, ImageSourcePropType, TouchableOpacity, View } from "react-native
 import { ScrollView } from "react-native-gesture-handler";
 import { brasaoList } from "./brasaoList";
 import { styles } from "./style";
+import { PostRequest } from "@/src/config/api-request/PostRequest";
+import { JOURNEY } from "@/src/config/api-routes/journey";
+import { showToast } from "@/src/utils/toastShow";
 
-type userProps = {
-    name: string,
-    email: string
-    password: string
-    password_confirmation: string
+type journeyrProps = {
+    title: string,
+    description: string
+    is_private: boolean
+    avatar: string
 }
 
 type ModalChoiceImgProps = {
@@ -36,67 +39,94 @@ export default function CreateJourney() {
     const navigation = useAppNavigation();
     const [visible, setVisible] = useState(false);
     const [selectedAvatar, setSelectedAvatar] = useState<SelectedImgProp | null>(null);
-    const [user, setUser] = useState<userProps>({
-        name: "",
-        email: "",
-        password: "",
-        password_confirmation: ""
+    const [journey, setJourney] = useState<journeyrProps>({
+        title: "",
+        description: "",
+        is_private: false,
+        avatar: ""
     })
-    const [isPrivate, setIsPrivate] = useState(false);
-
-    function handleSubmit(): void {
-        console.log({ user, isPrivate, selectedAvatar });
+    const clearFilds = () => {
+        setJourney({
+            title: "",
+            description: "",
+            is_private: false,
+            avatar: ""
+        })
     }
+
+    const handleSubmit = async () => {
+        try {
+            const response = await PostRequest(JOURNEY.CREATE(), journey)
+            if (!response) {
+                showToast.error(response.message || "Erro ao criar a jornada.");
+                // getUser();
+            }
+            showToast.success("Jornada criada com sucesso!");
+            clearFilds();
+
+        } catch (error) {
+            console.log("Erro ao editar conta: ", error);
+            showToast.error("Ocorreu um erro inesperado.");
+        }
+    }
+
     let avatarSource: ImageSourcePropType | undefined;
+
     if (selectedAvatar) {
         if (typeof selectedAvatar === 'number') {
             avatarSource = selectedAvatar;
-        }else if ('uri' in selectedAvatar && (selectedAvatar as any).uri) {
+        } else if ('uri' in selectedAvatar && (selectedAvatar as any).uri) {
             avatarSource = { uri: (selectedAvatar as any).uri };
         }
     }
 
     return (
-        <View style={styles.container}>
-            <View>
-                <HeaderBack title={"Criar a jornada"} onPress={navigation.goBack} />
+        <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+            <HeaderBack title={"Criar a jornada"} onPress={navigation.goBack} />
+            <ScrollView
+                contentContainerStyle={styles.containerScroll}
+                showsVerticalScrollIndicator={false}
+            >
+                <View>
+                    <View>
+                        <View style={styles.formUser}>
+                            <View style={styles.avatarContainer}>
+                                <Image source={avatarSource} style={styles.avatarImg} />
+                                <View style={styles.actionChoice}>
+                                    <Button color="neutral" onPress={() => setVisible(true)}>Escolher</Button>
+                                    <ModalChoiceImg visible={visible} setVisible={setVisible} onConfirm={(img) => setSelectedAvatar(img)} />
+                                </View>
+                            </View>
+                            <View style={styles.firtsFilds}>
+                                <InputText
+                                    label="Titulo"
+                                    value={journey.title}
+                                    onChangeText={(text) => setJourney({ ...journey, title: text })}
+                                    icon={"Castle"} />
+                                <InputText
+                                    label="Descrição"
+                                    value={journey.description}
+                                    onChangeText={(text) => setJourney({ ...journey, description: text })}
+                                    icon={"Newspaper"} />
 
-                <View style={styles.formUser}>
-                    <View style={styles.avatarContainer}>
-                        <Image source={avatarSource} style={styles.avatarImg} />
-                        <View style={styles.actionChoice}>
-                            <Button color="neutral"  onPress={() => setVisible(true)}>Escolher</Button>
-                            <ModalChoiceImg visible={visible} setVisible={setVisible} onConfirm={(img) => setSelectedAvatar(img)} />
+                                <InputToggle
+                                    label="Jornada" labelBold="Privada"
+                                    icon="Lock"
+                                    value={journey.is_private}
+                                    setValue={(e) => setJourney({ ...journey, is_private: e })}
+                                />
+
+                            </View>
                         </View>
                     </View>
-                    <View style={styles.firtsFilds}>
-                        <InputText
-                            label="Titulo"
-                            value={user.name}
-                            onChangeText={(text) => setUser({ ...user, name: text })}
-                            icon={"Castle"} />
-                        <InputText
-                            label="Descrição"
-                            value={user.email}
-                            onChangeText={(text) => setUser({ ...user, email: text })}
-                            icon={"Newspaper"} />
 
-                        <InputToggle
-                            label="Jornada" labelBold="Privada"
-                            icon="Lock"
-                            value={isPrivate}
-                            setValue={setIsPrivate}
-                        />
-
+                    <View style={styles.footerContainer}>
+                        <Button color={"primary"} onPress={handleSubmit}>
+                            Criar Jornada
+                        </Button>
                     </View>
                 </View>
-            </View>
-
-            <View style={styles.footerContainer}>
-                <Button color={"primary"} onPress={handleSubmit}>
-                    Criar Jornada
-                </Button>
-            </View>
+            </ScrollView>
         </View>
     );
 }

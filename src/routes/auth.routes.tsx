@@ -27,7 +27,7 @@ export default function AuthRoutes() {
 
     return (
         <Stack.Navigator
-        initialRouteName="CreateJourney"
+        initialRouteName="PageInitial"
          screenOptions={{
             headerShown: false,
             contentStyle: { backgroundColor: '#FFF' }
