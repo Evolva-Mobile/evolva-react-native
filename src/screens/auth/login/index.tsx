@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
 import ImageLogin from "@/assets/images/principal/coin.png";
-import { InputText } from '@/src/components/ui/InputText';
-import { PostRequest } from '@/src/config/api-request/PostRequest';
-import { useAppNavigation } from '@/src/utils/navigation';
-import { styles } from './style';
 import { Button } from '@/src/components/ui/Button';
 import { GlobalText } from '@/src/components/ui/GlobalText';
+import { InputText } from '@/src/components/ui/InputText';
+import { PostRequest } from '@/src/config/api-request/PostRequest';
 import { USER } from '@/src/config/api-routes/user';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from "@/src/contexts/AuthContext";
+import { useAppNavigation } from '@/src/utils/navigation';
 import { showToast } from '@/src/utils/toastShow';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useContext, useState } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
+import { styles } from './style';
 
 export type UserProps = {
     email: string;
@@ -17,6 +18,8 @@ export type UserProps = {
 };
 
 export default function LoginScreen() {
+    const { login } = useContext(AuthContext);
+
     const navigation = useAppNavigation();
     const [user, setUser] = useState<UserProps>({
         email: "",
@@ -26,11 +29,13 @@ export default function LoginScreen() {
     const handleSubmit = async () => {
         try {
             const response = await PostRequest(USER.LOGIN(), user)
-            if (response?.token) {
+            if (response?.token && response?.user) {
                 await AsyncStorage.setItem("@token", response.token);
                 await AsyncStorage.setItem("@user", JSON.stringify(response.user));
+
                 showToast.success(response.message);
-                navigation.navigate('Profile')
+                await login(response.user);
+
                 return
             }
             showToast.error(response.message);

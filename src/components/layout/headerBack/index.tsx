@@ -3,7 +3,7 @@ import { Icon } from "../../ui/Icon";
 import { colors } from "@/src/styles/theme";
 import { GlobalText } from "../../ui/GlobalText";
 type HeaderBackProps = {
-    title: string
+    title?: string
     onPress?: () => void;
 };
 
@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        padding: 8,
+        paddingVertical: 24,
+        paddingHorizontal: 24
     },
     text: {
         fontSize: 20,
