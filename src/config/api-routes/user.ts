@@ -3,5 +3,5 @@ export const USER = {
     GET_USER: () => `/user`,
     LOGIN: () => `/login`,
     LOGOUT: () => `/logout`,
-    UPDATE: (userId: string) => `/users/${userId}`
+    UPDATE: (userId: string | number) => `/users/${userId}`
 };

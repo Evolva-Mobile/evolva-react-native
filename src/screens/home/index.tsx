@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { Image, ImageSourcePropType, ScrollView, TouchableOpacity, View , Switch, ActivityIndicator } from "react-native";
+import { Image, ImageSourcePropType, ScrollView, TouchableOpacity, View, Switch, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { GlobalText } from "@/src/components/ui/GlobalText";
@@ -14,10 +14,10 @@ import CastleImg from "@/assets/images/home_page/inicial_castle.png";
 import SearchImg from "@/assets/images/home_page/lupa.png";
 import FeatherImg from "@/assets/images/home_page/pena.png";
 import LevelIcon from "@/assets/images/perfil/crown.png";
-   
+
 import JourneyOneIcon from "@/assets/images/principal/castle.png";
 import CoinsIcon from "@/assets/images/principal/coin.png";
-import JourneyTwoIcon from "@/assets/images/principal/viking-helmet.png";
+import Avatar from "@/assets/images/perfil/elf.png";
 
 import { styles } from "./style";
 import { ModalEnter } from "../journeys";
@@ -27,26 +27,9 @@ import { AuthContext } from "@/src/contexts/AuthContext";
 import { BottomAction, JourneyCard, JourneyData } from "./interface";
 
 
-const DEFAULT_JOURNEYS: JourneyCard[] = [
-    {
-        id: "journey-1",
-        title: "Jornada 1",
-        membersLabel: "70 members",
-        icon: JourneyOneIcon,
-    },
-    {
-        id: "journey-2",
-        title: "Jornada 2",
-        membersLabel: "10 members",
-        icon: JourneyTwoIcon,
-        hasNotification: true,
-    },
-];
-
 export default function Home() {
     const navigation = useAppNavigation();
     const { user } = useContext(AuthContext);
-
     const [journeys, setJourneys] = useState<JourneyData[]>([]);
     const [showCodeModal, setShowCodeModal] = useState(false);
     const [activeBottomAction, setActiveBottomAction] = useState<string>("home");
@@ -57,7 +40,7 @@ export default function Home() {
                 id: "level",
                 label: "Nível da Conta",
                 value: user?.level,
-                icon: LevelIcon,
+                icon: user?.avatar_url,
             },
             {
                 id: "coins",
@@ -171,30 +154,34 @@ export default function Home() {
                                 showsHorizontalScrollIndicator={false}
                                 contentContainerStyle={styles.journeyList}
                             >
-                                {journeys.map((journey) => (
-                                    <TouchableOpacity
-                                        key={journey.id}
-                                        onPress={() => navigation.navigate("Journey", { journeyId: String(journey.id) })}
-                                        activeOpacity={0.85}
-                                        style={styles.journeyCard}
-                                    >
-                                        {journey.image_url ? (
-                                            <Image source={{ uri: journey.image_url }} style={styles.journeyIcon} />
-                                        ) : (
-                                            <Image source={JourneyOneIcon} style={styles.journeyIcon} />
-                                        )}
-                                        <View style={styles.journeyTexts}>
-                                            <GlobalText variant="semibold" style={styles.journeyTitle}>
-                                                {journey.title}
-                                            </GlobalText>
-                                            <GlobalText style={styles.journeySubtitle}>
-                                                {journey.members.length} Membros
-                                            </GlobalText>
-                                        </View>
+                                {journeys?.length > 0 && (
+                                    journeys.map((journey) => (
+                                        <TouchableOpacity
+                                            key={journey.id}
+                                            onPress={() => navigation.navigate("Journey", { journeyId: String(journey.id) })}
+                                            activeOpacity={0.85}
+                                            style={styles.journeyCard}
+                                        >
+                                            {journey.image_url ? (
+                                                <Image source={{ uri: journey.image_url }} style={styles.journeyIcon} />
+                                            ) : (
+                                                <Image source={JourneyOneIcon} style={styles.journeyIcon} />
+                                            )}
+                                            <View style={styles.journeyTexts}>
+                                                <GlobalText variant="semibold" style={styles.journeyTitle}>
+                                                    {journey.title}
+                                                </GlobalText>
+                                                <GlobalText style={styles.journeySubtitle}>
+                                                    {journey.members.length} Membros
+                                                </GlobalText>
+                                            </View>
 
-                                        {/* {journey.hasNotification && <View style={styles.journeyBadge} />} */}
-                                    </TouchableOpacity>
-                                ))}
+                                            {/* {journey.hasNotification && <View style={styles.journeyBadge} />} */}
+                                        </TouchableOpacity>
+                                    ))
+
+                                )}
+
 
                                 <TouchableOpacity
                                     activeOpacity={0.9}
@@ -255,11 +242,7 @@ export default function Home() {
                                     ) : action.id === 'quests' ? (
                                         <Image source={FeatherImg} style={{ width: 24, height: 24 }} />
                                     ) : (
-                                        <Icon
-                                            name={action.icon}
-                                            size={24}
-                                            color={isActive ? colors.withe100 : colors.gray100}
-                                        />
+                                        <Image source={user?.avatar_url ?? Avatar} style={{ width: 24, height: 24 }} />
                                     )}
                                 </TouchableOpacity>
                             );

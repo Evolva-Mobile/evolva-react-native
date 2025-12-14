@@ -63,7 +63,7 @@ export default function JourneysScreen() {
     fetchPublicJourneys();
   }, [fetchPublicJourneys]);
 
-  
+
   return (
     <View style={styles.container}>
       <RefreshableScrollView refreshKey="journeys" onRefreshRequest={fetchPublicJourneys} contentContainerStyle={styles.scrollContent}>

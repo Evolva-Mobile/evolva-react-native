@@ -10,7 +10,7 @@ import { Icon } from "@/src/components/ui/Icon";
 import { colors } from "@/src/styles/theme";
 import { useAppNavigation } from "@/src/utils/navigation";
 import { GlobalText } from "@/src/components/ui/GlobalText";
-import { useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderBack } from "@/src/components/layout/headerBack";
 import { AuthContext } from "@/src/contexts/AuthContext";
@@ -29,7 +29,7 @@ export default function ProfileScreen() {
             <View>
                 <View style={styles.headerContainer}>
                     <View style={styles.avatarContainer}>
-                        <Image source={Img} style={styles.avatarImg} />
+                        <Image source={user?.avatar_url ?? Img} style={styles.avatarImg} />
                         <View style={styles.tagsContainer}>
                             <View>
                                 <GlobalText style={styles.name} variant="bold">{user?.name ?? "Carregando..."}</GlobalText>

@@ -78,7 +78,7 @@ export default function DetailsJorney({ journey }: { journey?: JourneyResponse }
                 <View
                     style={styles.masterPlayer}>
                     <View style={styles.masterContent}>
-                        <Image source={ImagePlayer || journey?.data.members[0].avatar} style={styles.imgAvatar} />
+                        <Image source={ journey?.data.members[0].avatar || ImagePlayer} style={styles.imgAvatar} />
 
                         <View>
                             <GlobalText variant="semibold" style={styles.textMaster}>{journey?.data.members[0].name}</GlobalText>
