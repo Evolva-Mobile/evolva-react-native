@@ -5,14 +5,12 @@ import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { styles } from "./style";
 import { Button } from "@/src/components/ui/Button";
-import { Icon } from "@/src/components/ui/Icon";
-import { USER } from "@/src/config/api-routes/user";
 import { GlobalText } from "@/src/components/ui/GlobalText";
-import { colors } from "@/src/styles/theme";
 import { showToast } from "@/src/utils/toastShow";
 import { InputToggle } from "@/src/components/ui/InputToggle";
 import { InputDate } from "@/src/components/ui/InputDate";
 import { TASK } from "@/src/config/api-routes/task";
+import { JourneyResponse } from "../main-journey/type";
 
 type taskProps = {
     journey_id?: number | string;
@@ -25,11 +23,10 @@ type taskProps = {
     requires_proof: boolean;
     proof_url: string;
 };
-
-export default function RegisterMissionScreen() {
+export default function RegisterMissionScreen({ journey }: { journey?: JourneyResponse }) {
     const navigation = useAppNavigation();
     const [task, setTask] = useState<taskProps>({
-        journey_id: 13,
+        journey_id: journey?.data.id,
         title: "",
         description: "",
         xp_reward: 0,
@@ -39,10 +36,10 @@ export default function RegisterMissionScreen() {
         requires_proof: false,
         proof_url: ""
     });
+    
 
     useEffect(() => {
         console.log(task);
-
     }, [task])
 
     const handleSubmit = async () => {

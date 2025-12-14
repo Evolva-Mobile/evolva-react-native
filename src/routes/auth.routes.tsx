@@ -27,7 +27,7 @@ export default function AuthRoutes() {
 
     return (
         <Stack.Navigator
-        initialRouteName="PageInitial"
+        initialRouteName={`${showInitial ? "PageInitial": "PageAccount"}`}
          screenOptions={{
             headerShown: false,
             contentStyle: { backgroundColor: '#FFF' }

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Image, ImageSourcePropType, ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -20,29 +20,11 @@ import JourneyTwoIcon from "@/assets/images/principal/viking-helmet.png";
 
 import { styles } from "./style";
 import { ModalEnter } from "../journeys";
+import { GetRequest } from "@/src/config/api-request/GetRequest";
+import { JOURNEY } from "@/src/config/api-routes/journey";
+import { AuthContext } from "@/src/contexts/AuthContext";
+import { BottomAction, JourneyCard, JourneyData } from "./interface";
 
-type StoredUser = {
-    level?: number;
-    accountLevel?: number;
-    coins?: number;
-    balance?: number;
-    walletCoins?: number;
-    name?: string;
-};
-
-type JourneyCard = {
-    id: string;
-    title: string;
-    membersLabel: string;
-    icon: ImageSourcePropType;
-    hasNotification?: boolean;
-};
-
-type BottomAction = {
-    id: string;
-    icon: Parameters<typeof Icon>[0]["name"];
-    onPress?: () => void;
-};
 
 const DEFAULT_JOURNEYS: JourneyCard[] = [
     {
@@ -62,12 +44,9 @@ const DEFAULT_JOURNEYS: JourneyCard[] = [
 
 export default function Home() {
     const navigation = useAppNavigation();
-    const [userStats, setUserStats] = useState<{ level?: number; coins?: number }>({
-        level: 22,
-        coins: 22317,
-    });
+    const { user } = useContext(AuthContext);
 
-    const [journeys, setJourneys] = useState<JourneyCard[]>(DEFAULT_JOURNEYS);
+    const [journeys, setJourneys] = useState<JourneyData[]>([]);
     const [showCodeModal, setShowCodeModal] = useState(false);
     const [activeBottomAction, setActiveBottomAction] = useState<string>("home");
 
@@ -76,17 +55,17 @@ export default function Home() {
             {
                 id: "level",
                 label: "Nível da Conta",
-                value: userStats.level,
+                value: user?.level,
                 icon: LevelIcon,
             },
             {
                 id: "coins",
                 label: "Moedas",
-                value: userStats.coins,
+                value: user?.coins,
                 icon: CoinsIcon,
             },
         ],
-        [userStats.coins, userStats.level]
+        [user?.coins, user?.level]
     );
 
     const bottomActions: BottomAction[] = useMemo(
@@ -121,46 +100,22 @@ export default function Home() {
         [navigation]
     );
 
-    const loadUserFromStorage = useCallback(async () => {
+    const getJourney = async () => {
         try {
-            const stored = await AsyncStorage.getItem("@user");
-            if (!stored) {
-                return;
-            }
-
-            const parsed: StoredUser = JSON.parse(stored);
-            setUserStats((prev) => ({
-                level: parsed.level ?? parsed.accountLevel ?? prev.level,
-                coins: parsed.coins ?? parsed.balance ?? parsed.walletCoins ?? prev.coins,
-            }));
-        } catch (error) {
-            console.warn("Não foi possível carregar os dados do usuário", error);
-        }
-    }, []);
-
-    const loadJourneysFromStorage = useCallback(async () => {
-        try {
-            const storedJourneys = await AsyncStorage.getItem("@journeys");
-            if (storedJourneys) {
-                const parsed: JourneyCard[] = JSON.parse(storedJourneys);
-                // Validate basic shape
-                if (Array.isArray(parsed)) {
-                    setJourneys(parsed.map(j => ({
-                        ...j,
-                        // Fallback icon if missing
-                        icon: j.icon || JourneyOneIcon,
-                    })));
-                }
+            const response = await GetRequest(JOURNEY.GETBYUSER())
+            if (response) {
+                setJourneys(response.data)
+                console.log(response)
             }
         } catch (error) {
-            console.warn("Não foi possível carregar as jornadas", error);
+            console.log("erro ao trazer dados: ", error);
         }
-    }, []);
+    }
 
     useEffect(() => {
-        loadUserFromStorage();
-        loadJourneysFromStorage();
-    }, [loadUserFromStorage, loadJourneysFromStorage]);
+        getJourney()
+    }, [])
+
 
     // Quando a Home ganha foco (volta da tela de busca), resetar o botão ativo para 'home'
     useFocusEffect(
@@ -218,21 +173,21 @@ export default function Home() {
                                 {journeys.map((journey) => (
                                     <TouchableOpacity
                                         key={journey.id}
-                                        onPress={() => navigation.navigate("Journey", {journeyId: "13",})}
+                                        onPress={() => navigation.navigate("Journey", { journeyId: String(journey.id) })}
                                         activeOpacity={0.85}
                                         style={styles.journeyCard}
                                     >
-                                        <Image source={journey.icon} style={styles.journeyIcon} />
+                                        <Image source={journey.url} style={styles.journeyIcon} />
                                         <View style={styles.journeyTexts}>
                                             <GlobalText variant="semibold" style={styles.journeyTitle}>
                                                 {journey.title}
                                             </GlobalText>
                                             <GlobalText style={styles.journeySubtitle}>
-                                                {journey.membersLabel}
+                                                {journey.members.length} Membros
                                             </GlobalText>
                                         </View>
 
-                                        {journey.hasNotification && <View style={styles.journeyBadge} />}
+                                        {/* {journey.hasNotification && <View style={styles.journeyBadge} />} */}
                                     </TouchableOpacity>
                                 ))}
 
@@ -256,7 +211,7 @@ export default function Home() {
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.ctaCard}
-                         onPress={() => setShowCodeModal(true)}
+                        onPress={() => setShowCodeModal(true)}
                     >
                         <View style={styles.ctaTexts}>
                             <GlobalText variant="bold" style={styles.ctaTitle}>

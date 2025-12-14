@@ -15,12 +15,6 @@ export default function HomeJourney({ journey }: { journey?: JourneyResponse }) 
     const [visible, setVisible] = useState(false);
     const [selectedMissionId, setSelectedMissionId] = useState<number | null>(null);
 
-    const missions = [
-        { title: "Tirar Lixo", days: "10", xp: 4123, status: false },
-        { title: "Lavar Louça", days: "10", xp: 1231, status: true },
-        { title: "Teste", days: "10", xp: 1231, status: true },
-    ];
-
     const handlePressMission = (missionId: number) => {
         setVisible(true);
         setSelectedMissionId(missionId);

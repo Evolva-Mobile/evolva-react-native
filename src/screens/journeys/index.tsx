@@ -8,9 +8,14 @@ import { Icon } from '@/src/components/ui/Icon';
 import { GlobalModal } from '@/src/components/ui/Modal';
 import { colors } from '@/src/styles/theme';
 import { useAppNavigation } from '@/src/utils/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Image, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './style';
+import { showToast } from '@/src/utils/toastShow';
+import { PostRequest } from '@/src/config/api-request/PostRequest';
+import { JOURNEY } from '@/src/config/api-routes/journey';
+import { InputText } from '@/src/components/ui/InputText';
+import { GetRequest } from '@/src/config/api-request/GetRequest';
 
 type JourneyItem = {
   id: string;
@@ -38,6 +43,7 @@ const DEFAULT_LIST: JourneyItem[] = [
 export default function JourneysScreen() {
   const [query, setQuery] = useState('');
   const [showCodeModal, setShowCodeModal] = useState(false);
+  const [journey, setJourneys] = useState<any>(null);
   const navigation = useAppNavigation();
 
   const filtered = useMemo(() => {
@@ -46,6 +52,7 @@ export default function JourneysScreen() {
     return DEFAULT_LIST.filter(j => j.title.toLowerCase().includes(term));
   }, [query]);
 
+  
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -101,6 +108,32 @@ export default function JourneysScreen() {
 }
 
 export function ModalEnter({ visible, onClose, onRequestClose }: ModalEntryProps) {
+  const [code, setCode] = useState<string>("")
+  const navigation = useAppNavigation();
+  const handleSubmit = async () => {
+
+    if (!code) {
+      showToast.warning("Digite um codigo para entrar em uma jornada")
+      return
+    }
+    const payload = {
+      join_code: code
+    }
+    try {
+      const response = await PostRequest(JOURNEY.JOIN(), payload)
+      if (!response) {
+        showToast.error(response.message || "Erro ao entrar em uma jornada.");
+      }
+
+      showToast.success("Você entrou em uma jornada!");
+      onClose()
+      navigation.navigate('Home')
+
+    } catch (error) {
+      console.log("Erro ao entrar em uma jornada: ", error);
+      showToast.error("Ocorreu um erro inesperado.");
+    }
+  }
   return (
     <GlobalModal
       visible={visible}
@@ -119,14 +152,13 @@ export function ModalEnter({ visible, onClose, onRequestClose }: ModalEntryProps
           Você precisa digitar ou escanear o código válido de uma jornada
         </GlobalText>
 
-        <View style={styles.codeInputBox}>
-          <Icon name="CircleDashed" color={colors.gray100} />
-          <TextInput
-            placeholder="Código"
-            placeholderTextColor={colors.gray100}
-            style={styles.codeInput}
-          />
-        </View>
+
+        <InputText
+          label="Codigo"
+          value={code}
+          onChangeText={(text) => setCode(text)}
+          icon={"Code"} />
+
 
         <GlobalText style={styles.orText}>Ou</GlobalText>
 
@@ -135,7 +167,7 @@ export function ModalEnter({ visible, onClose, onRequestClose }: ModalEntryProps
           <GlobalText variant="semibold">Escanear</GlobalText>
         </TouchableOpacity>
 
-        <Button color="primary" onPress={onClose}>
+        <Button color="primary" onPress={handleSubmit}>
           Confirmar
         </Button>
       </View>

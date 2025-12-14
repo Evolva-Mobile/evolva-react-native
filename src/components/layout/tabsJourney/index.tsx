@@ -113,8 +113,6 @@ export default function TabsJorney({ journey }: TabsJourneyProps) {
             {isMaster && (
                 <Tab.Screen
                     name="Missions"
-                    component={RegisterMissionScreen}
-
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <View
@@ -127,7 +125,9 @@ export default function TabsJorney({ journey }: TabsJourneyProps) {
                             </View>
                         )
                     }}
-                />
+                >
+                    {() => <RegisterMissionScreen journey={journey} />}
+                </Tab.Screen>
             )}
 
             <Tab.Screen

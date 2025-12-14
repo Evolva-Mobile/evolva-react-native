@@ -10,24 +10,15 @@ import { Icon } from "@/src/components/ui/Icon";
 import { colors } from "@/src/styles/theme";
 import { useAppNavigation } from "@/src/utils/navigation";
 import { GlobalText } from "@/src/components/ui/GlobalText";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderBack } from "@/src/components/layout/headerBack";
+import { AuthContext } from "@/src/contexts/AuthContext";
 
 export default function ProfileScreen() {
     const navigation = useAppNavigation();
-    const [user, setUser] = useState<any>(null);
+    const { user } = useContext(AuthContext);
 
-    useEffect(() => {
-        const loadUser = async () => {
-            const data = await AsyncStorage.getItem("@user");
-            if (data) {
-                setUser(JSON.parse(data));
-            }
-        };
-
-        loadUser();
-    }, []);
     return (<View style={{ flex: 1, backgroundColor: "#FFF" }}>
         <HeaderBack title={"Perfil"} onPress={navigation.goBack} config/>
         <ScrollView
