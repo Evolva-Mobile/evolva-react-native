@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { Image, ImageSourcePropType, ScrollView, TouchableOpacity, View } from "react-native";
+import { Image, ImageSourcePropType, ScrollView, TouchableOpacity, View , Switch, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { GlobalText } from "@/src/components/ui/GlobalText";
@@ -14,6 +14,7 @@ import CastleImg from "@/assets/images/home_page/inicial_castle.png";
 import SearchImg from "@/assets/images/home_page/lupa.png";
 import FeatherImg from "@/assets/images/home_page/pena.png";
 import LevelIcon from "@/assets/images/perfil/crown.png";
+   
 import JourneyOneIcon from "@/assets/images/principal/castle.png";
 import CoinsIcon from "@/assets/images/principal/coin.png";
 import JourneyTwoIcon from "@/assets/images/principal/viking-helmet.png";
@@ -177,7 +178,11 @@ export default function Home() {
                                         activeOpacity={0.85}
                                         style={styles.journeyCard}
                                     >
-                                        <Image source={journey.url} style={styles.journeyIcon} />
+                                        {journey.image_url ? (
+                                            <Image source={{ uri: journey.image_url }} style={styles.journeyIcon} />
+                                        ) : (
+                                            <Image source={JourneyOneIcon} style={styles.journeyIcon} />
+                                        )}
                                         <View style={styles.journeyTexts}>
                                             <GlobalText variant="semibold" style={styles.journeyTitle}>
                                                 {journey.title}

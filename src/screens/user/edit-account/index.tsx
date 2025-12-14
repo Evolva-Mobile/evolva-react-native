@@ -219,9 +219,8 @@ function ModalChoiceImg({ visible, setVisible, onConfirm }: ModalChoiceImgProps)
                     justifyContent: "center"
                 }}>
                     {avatarList.map((img, index) => (
-                        <TouchableOpacity onPress={() => setSelected(img)}>
+                        <TouchableOpacity key={index} onPress={() => setSelected(img)}>
                             <Image
-                                key={index}
                                 source={img}
                                 style={{
                                     width: 90,

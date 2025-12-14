@@ -8,14 +8,15 @@ import { Icon } from '@/src/components/ui/Icon';
 import { GlobalModal } from '@/src/components/ui/Modal';
 import { colors } from '@/src/styles/theme';
 import { useAppNavigation } from '@/src/utils/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import { Image, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Image, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './style';
 import { showToast } from '@/src/utils/toastShow';
 import { PostRequest } from '@/src/config/api-request/PostRequest';
 import { JOURNEY } from '@/src/config/api-routes/journey';
 import { InputText } from '@/src/components/ui/InputText';
 import { GetRequest } from '@/src/config/api-request/GetRequest';
+import { RefreshableScrollView } from '@/src/components/ui/RefreshableScrollView';
 
 type JourneyItem = {
   id: string;
@@ -31,31 +32,41 @@ type ModalEntryProps = {
 }
 
 
-const DEFAULT_LIST: JourneyItem[] = [
-  { id: '1', title: 'Jornada 1', description: 'Lorem ipsisdas blablal laflasd lasld...', icon: JourneyOneIcon },
-  { id: '2', title: 'Jornada 2', description: 'Lorem ipsisdas blablal laflasd lasld...', icon: JourneyTwoIcon },
-  { id: '3', title: 'Jornada 3', description: 'Lorem ipsisdas blablal laflasd lasld...', icon: JourneyTwoIcon },
-  { id: '4', title: 'Jornada 4', description: 'Lorem ipsisdas blablal laflasd lasld...', icon: JourneyTwoIcon },
-  { id: '5', title: 'Jornada 5', description: 'Lorem ipsisdas blablal laflasd lasld...', icon: JourneyTwoIcon },
-  { id: '6', title: 'Jornada 6', description: 'Lorem ipsisdas blablal laflasd lasld...', icon: JourneyTwoIcon },
-];
+const DEFAULT_LIST: JourneyItem[] = [];
 
 export default function JourneysScreen() {
   const [query, setQuery] = useState('');
   const [showCodeModal, setShowCodeModal] = useState(false);
-  const [journey, setJourneys] = useState<any>(null);
+  const [list, setList] = useState<JourneyItem[]>(DEFAULT_LIST);
   const navigation = useAppNavigation();
 
   const filtered = useMemo(() => {
     const term = query.trim().toLowerCase();
-    if (!term) return DEFAULT_LIST;
-    return DEFAULT_LIST.filter(j => j.title.toLowerCase().includes(term));
+    if (!term) return list;
+    return list.filter(j => j.title.toLowerCase().includes(term));
   }, [query]);
+
+  const fetchPublicJourneys = useCallback(async () => {
+    const data = await GetRequest(JOURNEY.PUBLIC_LIST());
+    if (Array.isArray(data)) {
+      const mapped: JourneyItem[] = data.map((j: any) => ({
+        id: String(j.id),
+        title: j.title,
+        description: j.description ?? '',
+        icon: j.image_url ? { uri: j.image_url } : JourneyOneIcon,
+      }));
+      setList(mapped);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPublicJourneys();
+  }, [fetchPublicJourneys]);
 
   
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <RefreshableScrollView refreshKey="journeys" onRefreshRequest={fetchPublicJourneys} contentContainerStyle={styles.scrollContent}>
         <View style={styles.headerRow}>
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Icon name="ChevronLeft" />
@@ -87,7 +98,7 @@ export default function JourneysScreen() {
             </TouchableOpacity>
           ))}
         </View>
-      </ScrollView>
+      </RefreshableScrollView>
 
       <View style={styles.bottomCtaWrapper}>
         <TouchableOpacity style={styles.bottomCta} activeOpacity={0.92} onPress={() => setShowCodeModal(true)}>
