@@ -11,12 +11,12 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
     },
 
-    container: {
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingBottom: 24,
-        paddingTop: 36,
-        justifyContent: 'space-between',
+    containerScroll: {
+        paddingBottom: 28,
+        gap: 24,
+        paddingHorizontal: 24,
+        paddingTop: 8,
+        backgroundColor: colors.withe100
     },
 
     avatarContainer: {

@@ -5,6 +5,20 @@ import { AuthContext } from "../contexts/AuthContext";
 import AuthRoutes from "./auth.routes";
 import AppRoutes from "./app.routes";
 
+export type RootStackParamList = {
+  Home: undefined;
+  Journeys: undefined;
+  CreateJourney: undefined;
+
+  Journey: {
+    journeyId: string;
+  };
+
+  Settings: undefined;
+  EditUser: undefined;
+  Profile: undefined;
+};
+
 export default function MainRoutes() {
   const { user, loading } = useContext(AuthContext);
 

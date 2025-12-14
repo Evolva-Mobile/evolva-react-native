@@ -12,12 +12,19 @@ import { useMemo, useState } from 'react';
 import { Image, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from './style';
 
- type JourneyItem = {
+type JourneyItem = {
   id: string;
   title: string;
   description: string;
   icon: any;
- };
+};
+
+type ModalEntryProps = {
+  visible: boolean
+  onClose: () => void
+  onRequestClose: () => void
+}
+
 
 const DEFAULT_LIST: JourneyItem[] = [
   { id: '1', title: 'Jornada 1', description: 'Lorem ipsisdas blablal laflasd lasld...', icon: JourneyOneIcon },
@@ -82,30 +89,58 @@ export default function JourneysScreen() {
         </TouchableOpacity>
       </View>
 
-      <GlobalModal visible={showCodeModal} onRequestClose={() => setShowCodeModal(false)} onClose={() => setShowCodeModal(false)} contentStyle={{ width: '100%' }}>
-        <View style={styles.codeModalContent}>
-          <Image source={OpenBookImg} style={{ width: 40, height: 40 }} />
-          <GlobalText variant="bold" style={styles.codeTitle}>Código da Jornada</GlobalText>
-          <GlobalText style={styles.codeSubtitle}>Você precisa digitar ou escanear o código válido de uma jornada</GlobalText>
+      <ModalEnter
+        visible={showCodeModal}
+        onClose={() => setShowCodeModal(false)}
+        onRequestClose={() => setShowCodeModal(false)}
+      />
 
-          <View style={styles.codeInputBox}>
-            <Icon name="CircleDashed" color={colors.gray100} />
-            <TextInput
-              placeholder="Código"
-              placeholderTextColor={colors.gray100}
-              style={styles.codeInput}
-            />
-          </View>
 
-          <GlobalText style={styles.orText}>Ou</GlobalText>
-          <TouchableOpacity style={styles.scanButton}>
-            <Icon name="Scan" color={colors.neutral100} />
-            <GlobalText variant="semibold">Escanear</GlobalText>
-          </TouchableOpacity>
-
-          <Button color="primary" onPress={() => setShowCodeModal(false)}>Confirmar</Button>
-        </View>
-      </GlobalModal>
     </View>
   );
 }
+
+export function ModalEnter({ visible, onClose, onRequestClose }: ModalEntryProps) {
+  return (
+    <GlobalModal
+      visible={visible}
+      onRequestClose={onRequestClose}
+      onClose={onClose}
+      contentStyle={{ width: '100%' }}
+    >
+      <View style={styles.codeModalContent}>
+        <Image source={OpenBookImg} style={{ width: 40, height: 40 }} />
+
+        <GlobalText variant="bold" style={styles.codeTitle}>
+          Código da Jornada
+        </GlobalText>
+
+        <GlobalText style={styles.codeSubtitle}>
+          Você precisa digitar ou escanear o código válido de uma jornada
+        </GlobalText>
+
+        <View style={styles.codeInputBox}>
+          <Icon name="CircleDashed" color={colors.gray100} />
+          <TextInput
+            placeholder="Código"
+            placeholderTextColor={colors.gray100}
+            style={styles.codeInput}
+          />
+        </View>
+
+        <GlobalText style={styles.orText}>Ou</GlobalText>
+
+        <TouchableOpacity style={styles.scanButton}>
+          <Icon name="Scan" color={colors.neutral100} />
+          <GlobalText variant="semibold">Escanear</GlobalText>
+        </TouchableOpacity>
+
+        <Button color="primary" onPress={onClose}>
+          Confirmar
+        </Button>
+      </View>
+    </GlobalModal>
+  );
+}
+
+

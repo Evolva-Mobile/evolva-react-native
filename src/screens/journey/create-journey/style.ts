@@ -2,7 +2,7 @@ import { colors } from "@/src/styles/theme";
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-     containerScroll: {
+    containerScroll: {
         paddingBottom: 28,
         gap: 24,
         paddingHorizontal: 24,
@@ -40,7 +40,6 @@ export const styles = StyleSheet.create({
     formUser: {
         paddingVertical: 20,
         gap: 20,
-        marginTop: 12,
         flexDirection: 'column'
     },
 
@@ -61,8 +60,11 @@ export const styles = StyleSheet.create({
     },
 
     footerContainer: {
-        gap: 28,
-        alignItems: "center",
-        width: "100%"
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: 16,
     }
+
 });

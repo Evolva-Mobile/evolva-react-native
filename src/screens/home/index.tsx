@@ -19,6 +19,7 @@ import CoinsIcon from "@/assets/images/principal/coin.png";
 import JourneyTwoIcon from "@/assets/images/principal/viking-helmet.png";
 
 import { styles } from "./style";
+import { ModalEnter } from "../journeys";
 
 type StoredUser = {
     level?: number;
@@ -67,7 +68,7 @@ export default function Home() {
     });
 
     const [journeys, setJourneys] = useState<JourneyCard[]>(DEFAULT_JOURNEYS);
-
+    const [showCodeModal, setShowCodeModal] = useState(false);
     const [activeBottomAction, setActiveBottomAction] = useState<string>("home");
 
     const statsCards = useMemo(
@@ -106,7 +107,7 @@ export default function Home() {
             {
                 id: "quests",
                 icon: "Feather",
-                onPress: () => setActiveBottomAction("quests"),
+                onPress: () => { setActiveBottomAction("quests"); navigation.navigate("CreateJourney"); }
             },
             {
                 id: "profile",
@@ -217,6 +218,7 @@ export default function Home() {
                                 {journeys.map((journey) => (
                                     <TouchableOpacity
                                         key={journey.id}
+                                        onPress={() => navigation.navigate("Journey", {journeyId: "13",})}
                                         activeOpacity={0.85}
                                         style={styles.journeyCard}
                                     >
@@ -237,7 +239,7 @@ export default function Home() {
                                 <TouchableOpacity
                                     activeOpacity={0.9}
                                     style={styles.createJourneyCard}
-                                    onPress={() => navigation.navigate('Settings')}
+                                    onPress={() => navigation.navigate('CreateJourney')}
                                 >
                                     <View style={styles.createJourneyIconContainer}>
                                         <Icon name="Plus" color={colors.neutral100} size={28} />
@@ -254,6 +256,7 @@ export default function Home() {
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.ctaCard}
+                         onPress={() => setShowCodeModal(true)}
                     >
                         <View style={styles.ctaTexts}>
                             <GlobalText variant="bold" style={styles.ctaTitle}>
@@ -263,6 +266,12 @@ export default function Home() {
                         </View>
                         <Image source={HandshakeIcon} style={styles.ctaImage} />
                     </TouchableOpacity>
+
+                    <ModalEnter
+                        visible={showCodeModal}
+                        onClose={() => setShowCodeModal(false)}
+                        onRequestClose={() => setShowCodeModal(false)}
+                    />
                 </ScrollView>
 
                 <View style={styles.bottomBarWrapper}>

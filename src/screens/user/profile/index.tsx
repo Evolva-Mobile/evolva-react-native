@@ -1,5 +1,5 @@
 
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, ScrollView } from "react-native";
 import Img from "@/assets/images/principal/elf.png";
 import ImgExperience from "@/assets/images/principal/crystal.png";
 import ImgCoin from "@/assets/images/principal/coin.png";
@@ -12,6 +12,7 @@ import { useAppNavigation } from "@/src/utils/navigation";
 import { GlobalText } from "@/src/components/ui/GlobalText";
 import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HeaderBack } from "@/src/components/layout/headerBack";
 
 export default function ProfileScreen() {
     const navigation = useAppNavigation();
@@ -27,8 +28,13 @@ export default function ProfileScreen() {
 
         loadUser();
     }, []);
-    return (
-        <View style={styles.container}>
+    return (<View style={{ flex: 1, backgroundColor: "#FFF" }}>
+        <HeaderBack title={"Perfil"} onPress={navigation.goBack} config/>
+        <ScrollView
+            contentContainerStyle={styles.containerScroll}
+            showsVerticalScrollIndicator={false}
+        >
+
             <View>
                 <View style={styles.headerContainer}>
                     <View style={styles.avatarContainer}>
@@ -44,12 +50,10 @@ export default function ProfileScreen() {
                             </View>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-                        <Icon name="Bolt" color={colors.neutral100} size={28} />
-                    </TouchableOpacity>
+                    
                 </View>
 
-                <View style={styles.profileContainer}>
+                <View>
                     <View style={styles.infosContainer}>
                         {/* Estatisticas */}
                         <View style={styles.listContainer}>
@@ -72,7 +76,7 @@ export default function ProfileScreen() {
                                     <Image source={ImgExperience} style={styles.statisticsImg} />
                                 </View>
                                 <View style={styles.statisticsItem}>
-                                    
+
                                     <View>
                                         <GlobalText variant="bold" style={styles.statisticsText}>4</GlobalText>
                                         <GlobalText style={styles.statisticsSubText}>Amigos</GlobalText>
@@ -80,7 +84,7 @@ export default function ProfileScreen() {
                                     <Image source={ImgFriends} style={styles.statisticsImg} />
                                 </View>
                                 <View style={styles.statisticsItem}>
-                                 
+
                                     <View>
                                         <GlobalText variant="bold" style={styles.statisticsText}>2</GlobalText>
                                         <GlobalText style={styles.statisticsSubText}>Jornadas</GlobalText>
@@ -109,7 +113,7 @@ export default function ProfileScreen() {
 
                 </View>
             </View>
-
-        </View>
+        </ScrollView>
+    </View>
     );
 }

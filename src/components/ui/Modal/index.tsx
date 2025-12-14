@@ -6,7 +6,7 @@ import { Icon } from "../Icon";
 type GlobalModalProps = {
   children: ReactNode;
   onClose?: () => void;
-  contentStyle?: object; // para customizar o container interno
+  contentStyle?: object; 
 } & ModalProps;
 
 export function GlobalModal({ children, onClose, contentStyle, ...modalProps }: GlobalModalProps) {

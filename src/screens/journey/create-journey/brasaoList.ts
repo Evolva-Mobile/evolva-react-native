@@ -1,14 +1,16 @@
 export const brasaoList = [
-    require("@/assets/images/perfil/elf.png"),
-    require("@/assets/images/perfil/crown.png"),
-    require("@/assets/images/perfil/dragon-2.png"),
-    require("@/assets/images/perfil/dragon.png"),
-    require("@/assets/images/perfil/gnome.png"),
-    require("@/assets/images/perfil/goblin.png"),
-    require("@/assets/images/perfil/king.png"),
-    require("@/assets/images/perfil/prince.png"),
-    require("@/assets/images/perfil/queen.png"),
-    require("@/assets/images/perfil/pinocchio.png"),
-    require("@/assets/images/perfil/minotaur.png"),
-    require("@/assets/images/perfil/unicorn.png")
+    require("@/assets/images/components/journey/avatars/banner.png"),
+    require("@/assets/images/components/journey/avatars/cabain.png"),
+    require("@/assets/images/components/journey/avatars/castle.png"),
+    require("@/assets/images/components/journey/avatars/greek-temple.png"),
+    require("@/assets/images/components/journey/avatars/kingdom.png"),
+    require("@/assets/images/components/journey/avatars/old.png"),
+    require("@/assets/images/components/journey/avatars/rudder.png"),
+    require("@/assets/images/components/journey/avatars/shield.png"),
+    require("@/assets/images/components/journey/avatars/ship.png"),
+    require("@/assets/images/components/journey/avatars/standard.png"),
+    require("@/assets/images/components/journey/avatars/shield-templar.png"),
+    require("@/assets/images/components/journey/avatars/shield-spart.png"),
+    require("@/assets/images/components/journey/avatars/torii.png"),
+
 ];
