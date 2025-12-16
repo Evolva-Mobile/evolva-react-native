@@ -4,6 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import Toast from "react-native-toast-message";
 import { CustomToast } from "../components/ui/Toast";
+import { RefreshProvider } from "../components/layout/RefreshProvider";
 import MainRoutes from "../routes";
 import { AuthProvider } from "../contexts/AuthContext";
 
@@ -25,11 +26,10 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <>
+    <RefreshProvider>
       <AuthProvider>
         <MainRoutes />
       </AuthProvider>
-
       <Toast
         config={{
           success: CustomToast.success,
@@ -41,7 +41,6 @@ export default function App() {
         autoHide
         position="top"
       />
-
-    </>
+    </RefreshProvider>
   );
 }

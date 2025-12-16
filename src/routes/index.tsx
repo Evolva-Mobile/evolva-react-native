@@ -6,6 +6,10 @@ import AuthRoutes from "./auth.routes";
 import AppRoutes from "./app.routes";
 
 export type RootStackParamList = {
+  Login: undefined;
+  Register: undefined;
+  ForgotPassword: undefined;
+
   Home: undefined;
   Journeys: undefined;
   CreateJourney: undefined;

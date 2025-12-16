@@ -10,7 +10,7 @@ import { Icon } from "@/src/components/ui/Icon";
 import { USER } from "@/src/config/api-routes/user";
 import { GlobalText } from "@/src/components/ui/GlobalText";
 import { colors } from "@/src/styles/theme";
-import Toast from "react-native-toast-message";
+
 import { showToast } from "@/src/utils/toastShow";
 
 type userProps = {

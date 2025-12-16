@@ -1,8 +1,8 @@
 
 import { InputText } from "@/src/components/ui/InputText";
 import { useAppNavigation } from "@/src/utils/navigation";
-import { useEffect, useState } from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { View, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import Img from "@/assets/images/principal/elf.png";
 import { Button } from "@/src/components/ui/Button";
 import { USER } from "@/src/config/api-routes/user";
@@ -17,8 +17,10 @@ import { styles } from "./style";
 import { GlobalModal } from "@/src/components/ui/Modal";
 import { avatarList } from "./avatarList";
 import { ScrollView } from "react-native-gesture-handler";
+import { AuthContext } from "@/src/contexts/AuthContext";
 
 type userProps = {
+    id: string | number
     name: string,
     email: string
     avatar_url: string
@@ -39,7 +41,9 @@ type SelectedImgProp = {
 }
 
 export default function EditUserScreen() {
+    const { reloadUser } = useContext(AuthContext);
     const navigation = useAppNavigation();
+    const [isLoading, setIsLoading] = useState(true);
     const [visible, setVisible] = useState(false);
     const [selectedAvatar, setSelectedAvatar] = useState<SelectedImgProp>({
         width: 0,
@@ -48,6 +52,7 @@ export default function EditUserScreen() {
     });
 
     const [user, setUser] = useState<userProps>({
+        id: 0,
         name: "",
         email: "",
         password: "",
@@ -70,12 +75,14 @@ export default function EditUserScreen() {
             payload.password_confirmation = user.password_confirmation;
         }
         try {
-            const response = await PatchRequest(USER.UPDATE('1'), payload)
-            if (response) {
-                showToast.success("Conta atualizada com sucesso!");
-                getUser();
+            const response = await PatchRequest(USER.UPDATE(user.id), payload)
+            if (!response) {
+                showToast.error(response.message || "Erro ao atualizar a conta.");
+                return
             }
-            showToast.error(response.message || "Erro ao atualizar a conta.");
+            showToast.success("Conta atualizada com sucesso!");
+            await reloadUser();
+            getUser();
         } catch (error) {
             console.log("Erro ao editar conta: ", error);
             showToast.error("Ocorreu um erro inesperado.");
@@ -84,28 +91,52 @@ export default function EditUserScreen() {
 
     const getUser = async () => {
         try {
-            const response = await GetRequest(USER.GET_USER())
+            setIsLoading(true);
+
+            const response = await GetRequest(USER.GET_USER());
+
             if (response) {
-                setUser(response)
-                console.log(response)
+                setUser(response);
             }
         } catch (error) {
-            console.log("erro ao criar conta: ", error);
+            console.log("erro ao buscar usuário: ", error);
+            showToast.error("Erro ao carregar dados do usuário.");
+        } finally {
+            setIsLoading(false);
         }
-    }
+    };
+
 
     useEffect(() => {
         getUser()
     }, [])
 
-     useEffect(() => {
+    useEffect(() => {
         console.log(user)
     }, [user])
 
+    if (isLoading) {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#FFF",
+                }}
+            >
+                <ActivityIndicator size="large" color={colors.primary} />
+            </View>
+        );
+    }
+
     return (
-        <View style={styles.container}>
-            <View>
-                <HeaderBack title={"Editar conta"} onPress={navigation.goBack} />
+        <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+            <HeaderBack title={"Perfil"} onPress={navigation.goBack} config />
+            <ScrollView
+                contentContainerStyle={styles.containerScroll}
+                showsVerticalScrollIndicator={false}
+            >
 
                 <View style={styles.formUser}>
                     <View style={styles.avatarContainer}>
@@ -169,7 +200,7 @@ export default function EditUserScreen() {
                             icon={"Repeat"} />
                     </View>
                 </View>
-            </View>
+            </ScrollView>
 
             <View style={styles.footerContainer}>
                 <Button color={"secondary"} onPress={handleSubmit}>
@@ -219,9 +250,8 @@ function ModalChoiceImg({ visible, setVisible, onConfirm }: ModalChoiceImgProps)
                     justifyContent: "center"
                 }}>
                     {avatarList.map((img, index) => (
-                        <TouchableOpacity onPress={() => setSelected(img)}>
+                        <TouchableOpacity key={index} onPress={() => setSelected(img)}>
                             <Image
-                                key={index}
                                 source={img}
                                 style={{
                                     width: 90,

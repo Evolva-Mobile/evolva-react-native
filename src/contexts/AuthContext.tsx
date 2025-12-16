@@ -1,5 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GetRequest } from "../config/api-request/GetRequest";
+import { USER } from "../config/api-routes/user";
 
 type userProps = {
   id: number;
@@ -18,20 +20,22 @@ type AuthContextProps = {
   loading: boolean;
   login: (userData: any) => Promise<void>;
   logout: () => Promise<void>;
+  reloadUser: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextProps>({
   user: null,
   loading: true,
-  login: async () => { },
-  logout: async () => { },
+  login: async () => {},
+  logout: async () => {},
+  reloadUser: async () => {},
 });
 
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<userProps | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Carregar login salvo
   useEffect(() => {
     async function loadStorage() {
       const saved = await AsyncStorage.getItem("@user");
@@ -41,19 +45,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loadStorage();
   }, []);
 
-  async function login(userData: any) {
+  async function persistUser(userData: userProps | null) {
+    if (userData) {
+      await AsyncStorage.setItem("@user", JSON.stringify(userData));
+    } else {
+      await AsyncStorage.removeItem("@user");
+    }
+  }
+
+  async function login(userData: userProps) {
     setUser(userData);
-    await AsyncStorage.setItem("@user", JSON.stringify(userData));
+    await persistUser(userData);
   }
 
   async function logout() {
     setUser(null);
-    await AsyncStorage.removeItem("@user");
+    await persistUser(null);
+  }
+
+  // 🔥 MÉTODO DE RELOAD
+  async function reloadUser() {
+    try {
+      const response = await GetRequest(USER.GET_USER());
+      if (response) {
+        setUser(response);
+        await persistUser(response);
+      }
+    } catch (error) {
+      console.log("Erro ao recarregar usuário:", error);
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+        reloadUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 }
+

@@ -12,15 +12,6 @@ import { JourneyResponse } from "../main-journey/type"
 
 
 export default function DetailsJorney({ journey }: { journey?: JourneyResponse }) {
-    const players = [
-        { name: "Eduardo", xp: 12312123, avatar: ImagePlayer },
-        { name: "Rodolfo", xp: 55123, avatar: ImagePlayer },
-        { name: "Vitor", xp: 3412, avatar: ImagePlayer },
-        { name: "P1", xp: 1412, avatar: ImagePlayer },
-        { name: "P2", xp: 342, avatar: ImagePlayer },
-        { name: "P3", xp: 142, avatar: ImagePlayer },
-        { name: "P4", xp: 142, avatar: ImagePlayer },
-    ];
     return (
 
         <ScrollView
@@ -78,7 +69,7 @@ export default function DetailsJorney({ journey }: { journey?: JourneyResponse }
                 <View
                     style={styles.masterPlayer}>
                     <View style={styles.masterContent}>
-                        <Image source={ImagePlayer || journey?.data.members[0].avatar} style={styles.imgAvatar} />
+                        <Image source={ journey?.data.members[0].avatar || ImagePlayer} style={styles.imgAvatar} />
 
                         <View>
                             <GlobalText variant="semibold" style={styles.textMaster}>{journey?.data.members[0].name}</GlobalText>

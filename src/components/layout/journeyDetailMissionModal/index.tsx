@@ -23,7 +23,7 @@ type DetailMissionProps = {
 
 export default function DetailMissionModal({ visible, setVisible, mssionId }: DetailMissionProps) {
     const [assigned, setAssigned] = useState(true);
-    const [assignedToMe, setAssignedToMe] = useState(true);
+    const [assignedToMe, setAssignedToMe] = useState(false);
     const [isProve, setIsProve] = useState(false);
 
     const isFree = !assigned;

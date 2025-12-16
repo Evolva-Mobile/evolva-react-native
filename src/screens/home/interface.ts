@@ -24,6 +24,7 @@ export type JourneyData = {
   description: string;
   join_code: string;
   is_private: boolean;
+  image_url?: string | null;
   members: Member[];
   tasks: Task[];
   tasks_boss: Task[];

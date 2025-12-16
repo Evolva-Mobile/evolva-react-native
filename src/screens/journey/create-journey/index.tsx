@@ -15,46 +15,50 @@ import { styles } from "./style";
 import { PostRequest } from "@/src/config/api-request/PostRequest";
 import { JOURNEY } from "@/src/config/api-routes/journey";
 import { showToast } from "@/src/utils/toastShow";
+import Img from "@/assets/images/components/journey/avatars/banner.png"
+type JourneyProps = {
+    title: string;
+    description: string;
+    is_private: boolean;
+    image_url: string;
+};
 
-type journeyrProps = {
-    title: string,
-    description: string
-    is_private: boolean
-    avatar: string
-}
+type SelectedImgProp = {
+    uri: string;
+    width: number;
+    height: number;
+};
 
 type ModalChoiceImgProps = {
-    visible: boolean,
-    onConfirm: (img: SelectedImgProp) => void,
-    setVisible: (value: boolean) => void
-}
-
-type SelectedImgProp = ImageSourcePropType | {
-    width: number,
-    uri?: string,
-    height: number
-}
+    visible: boolean;
+    onConfirm: (img: SelectedImgProp) => void;
+    setVisible: (value: boolean) => void;
+};
 
 export default function CreateJourney() {
     const navigation = useAppNavigation();
     const [visible, setVisible] = useState(false);
-    const [selectedAvatar, setSelectedAvatar] = useState<SelectedImgProp | null>({
-        width: 128,
-        uri: '/assets/?unstable_path=.%2Fassets%2Fimages%2Fcomponents%2Fjourney%2Favatars/standard.png',
-        height: 128
-    });
-    const [journey, setJourney] = useState<journeyrProps>({
+    const [selectedAvatar, setSelectedAvatar] = useState<SelectedImgProp | null>(
+        {
+            width: 128,
+            uri: '/assets/?unstable_path=.%2Fassets%2Fimages%2Fcomponents%2Fjourney%2Favatars/standard.png',
+            height: 128
+        }
+    );
+
+    const [journey, setJourney] = useState<JourneyProps>({
         title: "",
         description: "",
         is_private: false,
-        avatar: ""
+        image_url: ""
     })
+
     const clearFilds = () => {
         setJourney({
             title: "",
             description: "",
             is_private: false,
-            avatar: ""
+            image_url: ""
         })
     }
 
@@ -71,11 +75,11 @@ export default function CreateJourney() {
         try {
             const response = await PostRequest(JOURNEY.CREATE(), journey)
             if (!response) {
-                showToast.error(response.message || "Erro ao criar a jornada.");
+                showToast.success("Jornada criada com sucesso!");
+                clearFilds();
                 navigation.navigate('Home')
             }
-            showToast.success("Jornada criada com sucesso!");
-            clearFilds();
+            showToast.error(response.message || "Erro ao criar a jornada.");
 
         } catch (error) {
             console.log("Erro ao editar conta: ", error);
@@ -93,11 +97,6 @@ export default function CreateJourney() {
         }
     }
 
-    useEffect(() => {
-        console.log(selectedAvatar);
-
-    }, [selectedAvatar])
-
     return (
         <View style={{ flex: 1, backgroundColor: "#FFF" }}>
             <HeaderBack title={"Criar a jornada"} onPress={navigation.goBack} />
@@ -108,10 +107,34 @@ export default function CreateJourney() {
                 <View>
                     <View style={styles.formUser}>
                         <View style={styles.avatarContainer}>
-                            <Image source={avatarSource} style={styles.avatarImg} />
+                            <Image
+                                source={
+                                    selectedAvatar?.uri
+                                        ? { uri: selectedAvatar.uri }
+                                        : journey.image_url
+                                            ? { uri: journey.image_url }
+                                            : Img
+                                }
+                                style={styles.avatarImg}
+                            />
+
                             <View style={styles.actionChoice}>
-                                <Button color="neutral" onPress={() => setVisible(true)}>Escolher</Button>
-                                <ModalChoiceImg visible={visible} setVisible={setVisible} onConfirm={(img) => setSelectedAvatar(img)} />
+                                <Button color="neutral" onPress={() => setVisible(true)}>
+                                    Escolher
+                                </Button>
+
+                                <ModalChoiceImg
+                                    visible={visible}
+                                    setVisible={setVisible}
+                                    onConfirm={(img) => {
+                                        setSelectedAvatar(img);
+                                        setJourney((prev) => ({
+                                            ...prev,
+                                            image_url: img.uri,
+                                        }));
+                                    }}
+                                />
+
                             </View>
                         </View>
                         <View style={styles.firtsFilds}>
