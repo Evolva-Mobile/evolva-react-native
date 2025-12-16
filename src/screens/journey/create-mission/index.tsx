@@ -1,7 +1,6 @@
 import { InputText } from "@/src/components/ui/InputText";
 import { PostRequest } from "@/src/config/api-request/PostRequest";
-import { useAppNavigation } from "@/src/utils/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { styles } from "./style";
 import { Button } from "@/src/components/ui/Button";
@@ -23,8 +22,8 @@ type taskProps = {
     requires_proof: boolean;
     proof_url: string;
 };
+
 export default function RegisterMissionScreen({ journey }: { journey?: JourneyResponse }) {
-    const navigation = useAppNavigation();
     const [task, setTask] = useState<taskProps>({
         journey_id: journey?.data.id,
         title: "",
@@ -36,11 +35,7 @@ export default function RegisterMissionScreen({ journey }: { journey?: JourneyRe
         requires_proof: false,
         proof_url: ""
     });
-    
 
-    useEffect(() => {
-        console.log(task);
-    }, [task])
 
     const handleSubmit = async () => {
         if (task.title === "") {

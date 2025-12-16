@@ -75,11 +75,11 @@ export default function CreateJourney() {
         try {
             const response = await PostRequest(JOURNEY.CREATE(), journey)
             if (!response) {
-                showToast.error(response.message || "Erro ao criar a jornada.");
+                showToast.success("Jornada criada com sucesso!");
+                clearFilds();
                 navigation.navigate('Home')
             }
-            showToast.success("Jornada criada com sucesso!");
-            clearFilds();
+            showToast.error(response.message || "Erro ao criar a jornada.");
 
         } catch (error) {
             console.log("Erro ao editar conta: ", error);
@@ -96,10 +96,6 @@ export default function CreateJourney() {
             avatarSource = { uri: (selectedAvatar as any).uri };
         }
     }
-
-    useEffect(() => {
-        console.log(journey);
-    }, [journey])
 
     return (
         <View style={{ flex: 1, backgroundColor: "#FFF" }}>

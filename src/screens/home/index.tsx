@@ -40,7 +40,7 @@ export default function Home() {
                 id: "level",
                 label: "Nível da Conta",
                 value: user?.level,
-                icon: user?.avatar_url,
+                icon: user?.avatar_url || Avatar,
             },
             {
                 id: "coins",

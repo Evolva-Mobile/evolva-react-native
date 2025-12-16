@@ -1,7 +1,7 @@
 
 import { InputText } from "@/src/components/ui/InputText";
 import { useAppNavigation } from "@/src/utils/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { View, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import Img from "@/assets/images/principal/elf.png";
 import { Button } from "@/src/components/ui/Button";
@@ -17,6 +17,7 @@ import { styles } from "./style";
 import { GlobalModal } from "@/src/components/ui/Modal";
 import { avatarList } from "./avatarList";
 import { ScrollView } from "react-native-gesture-handler";
+import { AuthContext } from "@/src/contexts/AuthContext";
 
 type userProps = {
     id: string | number
@@ -40,6 +41,7 @@ type SelectedImgProp = {
 }
 
 export default function EditUserScreen() {
+    const { reloadUser } = useContext(AuthContext);
     const navigation = useAppNavigation();
     const [isLoading, setIsLoading] = useState(true);
     const [visible, setVisible] = useState(false);
@@ -74,11 +76,13 @@ export default function EditUserScreen() {
         }
         try {
             const response = await PatchRequest(USER.UPDATE(user.id), payload)
-            if (response) {
-                showToast.success("Conta atualizada com sucesso!");
-                getUser();
+            if (!response) {
+                showToast.error(response.message || "Erro ao atualizar a conta.");
+                return
             }
-            showToast.error(response.message || "Erro ao atualizar a conta.");
+            showToast.success("Conta atualizada com sucesso!");
+            await reloadUser();
+            getUser();
         } catch (error) {
             console.log("Erro ao editar conta: ", error);
             showToast.error("Ocorreu um erro inesperado.");
