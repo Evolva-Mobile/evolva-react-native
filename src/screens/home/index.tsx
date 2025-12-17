@@ -218,6 +218,7 @@ export default function Home() {
                         visible={showCodeModal}
                         onClose={() => setShowCodeModal(false)}
                         onRequestClose={() => setShowCodeModal(false)}
+                        onGetJouneys={() => getJourney()}
                     />
                 </ScrollView>
 

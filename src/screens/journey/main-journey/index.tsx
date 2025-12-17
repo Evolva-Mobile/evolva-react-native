@@ -32,7 +32,7 @@ export default function MainJourney({ route }: Props) {
             );
 
             if (response) {
-                setJourney(response);
+                setJourney(response);                
             }
         } catch (error) {
             console.log("erro ao buscar jornada: ", error);

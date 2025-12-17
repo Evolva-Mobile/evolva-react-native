@@ -34,7 +34,7 @@ export default function HomeJourney({ journey }: { journey?: JourneyResponse }) 
             >
                 {/* Avatar da Jornada */}
                 <View style={styles.journeyInfo}>
-                    <Image source={ImageAvatar} style={styles.imgAvatarJourney} />
+                    <Image source={journey?.data.image_url ?? ImageAvatar} style={styles.imgAvatarJourney} />
 
                     <GlobalText variant="medium" style={styles.descJourney}>
                         {journey?.data.description ?? "Sem descrição"}
@@ -127,7 +127,7 @@ export default function HomeJourney({ journey }: { journey?: JourneyResponse }) 
                         )
                     }
 
-                        <DetailMissionModal visible={visible} setVisible={setVisible} mssionId={selectedMissionId}/>
+                    <DetailMissionModal visible={visible} setVisible={setVisible} mssionId={selectedMissionId} />
                 </View>
             </ScrollView>
         </View>

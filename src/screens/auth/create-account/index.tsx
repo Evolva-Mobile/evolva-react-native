@@ -45,7 +45,7 @@ export default function RegisterScreen() {
         try {
             const response = await PostRequest(USER.REGISTER(), user);
 
-            if (response.success) {
+            if (response) {
                 showToast.success(response.message)
                 navigation.navigate("Login");
             } else {

@@ -12,6 +12,11 @@ import { JourneyResponse } from "../main-journey/type"
 
 
 export default function DetailsJorney({ journey }: { journey?: JourneyResponse }) {
+    const players = journey?.data.members.filter(
+        (member) => !member.is_master
+    ) ?? [];
+
+
     return (
 
         <ScrollView
@@ -21,7 +26,7 @@ export default function DetailsJorney({ journey }: { journey?: JourneyResponse }
             {/* Avatar da Jornada */}
             <View style={styles.journeyInfo}>
                 <Image
-                    source={ImageAvatar}
+                    source={journey?.data.image_url ?? ImageAvatar}
                     style={styles.imgAvatarJourney}
                 />
                 <GlobalText variant="medium" style={styles.descJourney}>
@@ -65,49 +70,82 @@ export default function DetailsJorney({ journey }: { journey?: JourneyResponse }
 
             {/* Lista de Jogadores */}
             <View>
-                <GlobalText variant="semibold" style={styles.titleList}>Mestre</GlobalText>
-                <View
-                    style={styles.masterPlayer}>
-                    <View style={styles.masterContent}>
-                        <Image source={ journey?.data.members[0].avatar || ImagePlayer} style={styles.imgAvatar} />
+                <GlobalText variant="semibold" style={styles.titleList}>
+                    Mestre
+                </GlobalText>
 
-                        <View>
-                            <GlobalText variant="semibold" style={styles.textMaster}>{journey?.data.members[0].name}</GlobalText>
-                            <GlobalText style={styles.subTextMaster}>{journey?.data.members[0].id} XP</GlobalText>
+                {journey?.data.members.map((member) =>
+                    member.is_master ? (
+                        <View key={member.id} style={styles.masterPlayer}>
+                            <View style={styles.masterContent}>
+                                <Image
+                                    source={
+                                        member.avatar
+                                            ? { uri: member.avatar }
+                                            : ImagePlayer
+                                    }
+                                    style={styles.imgAvatar}
+                                />
+
+                                <View>
+                                    <GlobalText variant="semibold" style={styles.textMaster}>
+                                        {member.name}
+                                    </GlobalText>
+
+                                    <GlobalText style={styles.subTextMaster}>
+                                        {member.id} XP
+                                    </GlobalText>
+                                </View>
+                            </View>
+
+                            <Image source={ImageCrown} style={styles.imgCrown} />
                         </View>
-                    </View>
-                    <Image source={ImageCrown} style={styles.imgCrown} />
+                    ) : null
+                )}
+
+            </View>
+            <View>
+                <GlobalText variant="semibold" style={styles.titleList}>
+                    Jogadores
+                </GlobalText>
+
+                <View style={styles.listPlayers}>
+                    {players.map((member, index) => {
+                        const isLast = index === players.length - 1;
+
+                        return (
+                            <View
+                                key={member.id}
+                                style={[
+                                    styles.itemPlayer,
+                                    isLast && { borderBottomWidth: 0 }
+                                ]}
+                            >
+                                <Image
+                                    source={
+                                        member.avatar
+                                            ? { uri: member.avatar }
+                                            : ImagePlayer
+                                    }
+                                    style={styles.imgAvatar}
+                                />
+
+                                <View>
+                                    <GlobalText variant="semibold">
+                                        {member.name}
+                                    </GlobalText>
+
+                                    <GlobalText style={styles.textXp}>
+                                        {member.id} XP
+                                    </GlobalText>
+                                </View>
+                            </View>
+                        );
+                    })}
+
                 </View>
             </View>
-            {journey?.data.members.slice(1).length !== 0 ? (
-                <View>
-                    <GlobalText variant="semibold" style={styles.titleList}>Jogadores</GlobalText>
-                    <View style={styles.listPlayers}>
-                        {journey?.data.members.slice(1).map((player, index) => {
-                            const isLast = index === journey?.data.members.slice(1).length - 1;
-                            return (
-                                <View
-                                    key={index}
-                                    style={[
-                                        styles.itemPlayer,
-                                        isLast && { borderBottomWidth: 0 }
-                                    ]}
-                                >
 
-                                    <Image source={player.avatar || ImagePlayer} style={styles.imgAvatar} />
-
-                                    <View>
-                                        <GlobalText variant="semibold">{player.name}</GlobalText>
-                                        <GlobalText style={styles.textXp}>{player.xp} XP</GlobalText>
-                                    </View>
-                                </View>
-                            );
-                        })}
-                    </View>
-                </View>
-            )
-            :
-            (<></>)}
             {/* Danger Zone */}
             <Button color={colors.red90} colorBorder={colors.red100} colorText={colors.withe100} icon='HeartCrack'>
                 Sair da Jornada

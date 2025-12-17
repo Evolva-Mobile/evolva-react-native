@@ -28,6 +28,7 @@ type JourneyItem = {
 type ModalEntryProps = {
   visible: boolean
   onClose: () => void
+  onGetJouneys?: () => void
   onRequestClose: () => void
 }
 
@@ -118,7 +119,7 @@ export default function JourneysScreen() {
   );
 }
 
-export function ModalEnter({ visible, onClose, onRequestClose }: ModalEntryProps) {
+export function ModalEnter({ visible, onClose, onRequestClose, onGetJouneys }: ModalEntryProps) {
   const [code, setCode] = useState<string>("")
   const navigation = useAppNavigation();
   const handleSubmit = async () => {
@@ -137,6 +138,9 @@ export function ModalEnter({ visible, onClose, onRequestClose }: ModalEntryProps
       }
 
       showToast.success("Você entrou em uma jornada!");
+      if (onGetJouneys) {
+        onGetJouneys();
+      }
       onClose()
       navigation.navigate('Home')
 

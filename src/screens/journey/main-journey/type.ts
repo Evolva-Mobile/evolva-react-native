@@ -6,6 +6,7 @@ export interface JourneyData {
   id: number;
   title: string;
   description: string;
+  image_url: string;
   join_code: string;
   is_private: boolean;
   members: JourneyMember[];
