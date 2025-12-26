@@ -17,12 +17,14 @@ export const CustomToast = {
       <GlobalText variant="regular" style={styles.text}>{text1}</GlobalText>
     </View>
   ),
+  
   warning: ({ text1 }: any) => (
     <View style={[styles.container, { backgroundColor: "#f1c40f" }]}>
       <Icon name="AlertCircle" size={20} color="#fff" />
       <GlobalText variant="regular" style={styles.text}>{text1}</GlobalText>
     </View>
   ),
+
   info: ({ text1 }: any) => (
     <View style={[styles.container, { backgroundColor: "#3498db" }]}>
       <Icon name="Info" size={20} color="#fff" />

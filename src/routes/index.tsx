@@ -4,6 +4,7 @@ import { AuthContext } from "../contexts/AuthContext";
 
 import AuthRoutes from "./auth.routes";
 import AppRoutes from "./app.routes";
+import { JourneyResponse } from "../screens/journey/main-journey/type";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -14,6 +15,14 @@ export type RootStackParamList = {
   Journeys: undefined;
   CreateJourney: undefined;
 
+  CreateMission: {
+    journey?: JourneyResponse;
+  };
+
+  PendentMission: {
+    journey?: JourneyResponse;
+  }
+  
   Journey: {
     journeyId: string;
   };

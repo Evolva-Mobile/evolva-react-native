@@ -6,6 +6,8 @@ import MainJourney from "../screens/journey/main-journey";
 import CreateJourney from "../screens/journey/create-journey";
 import Home from "../screens/home";
 import JourneysScreen from "../screens/journeys";
+import RegisterMissionScreen from "../screens/journey/create-mission";
+import PendentMissionScreen from "../screens/journey/pendent-mision";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +30,9 @@ export default function AppRoutes() {
 
             {/* Jornada */}
             <Stack.Screen name="CreateJourney" component={CreateJourney} />
+            <Stack.Screen name="CreateMission" component={RegisterMissionScreen} />
+            <Stack.Screen name="PendentMission" component={PendentMissionScreen} />
+
             <Stack.Screen name="Journey" component={MainJourney} />
         </Stack.Navigator>
     );

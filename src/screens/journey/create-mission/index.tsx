@@ -1,6 +1,6 @@
 import { InputText } from "@/src/components/ui/InputText";
 import { PostRequest } from "@/src/config/api-request/PostRequest";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { styles } from "./style";
 import { Button } from "@/src/components/ui/Button";
@@ -10,6 +10,10 @@ import { InputToggle } from "@/src/components/ui/InputToggle";
 import { InputDate } from "@/src/components/ui/InputDate";
 import { TASK } from "@/src/config/api-routes/task";
 import { JourneyResponse } from "../main-journey/type";
+import { HeaderBack } from "@/src/components/layout/headerBack";
+import { useAppNavigation } from "@/src/utils/navigation";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/src/routes";
 
 type taskProps = {
     journey_id?: number | string;
@@ -23,9 +27,15 @@ type taskProps = {
     proof_url: string;
 };
 
-export default function RegisterMissionScreen({ journey }: { journey?: JourneyResponse }) {
+type Props = NativeStackScreenProps<
+    RootStackParamList,
+    "CreateMission"
+>;
+
+export default function RegisterMissionScreen({ route }: Props) {
+    const navigation = useAppNavigation();
     const [task, setTask] = useState<taskProps>({
-        journey_id: journey?.data.id,
+        journey_id: route?.params.journey?.data.id,
         title: "",
         description: "",
         xp_reward: 0,
@@ -35,7 +45,6 @@ export default function RegisterMissionScreen({ journey }: { journey?: JourneyRe
         requires_proof: false,
         proof_url: ""
     });
-
 
     const handleSubmit = async () => {
         if (task.title === "") {
@@ -80,58 +89,63 @@ export default function RegisterMissionScreen({ journey }: { journey?: JourneyRe
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+        <View style={{ flex: 1 }}>
+            <HeaderBack
+                title={route?.params.journey?.data.title}
+                onPress={navigation.goBack}
+            />
+            <View style={{ flex: 1, backgroundColor: "#FFF" }}>
 
-            <ScrollView
-                contentContainerStyle={styles.containerScroll}
-                showsVerticalScrollIndicator={false}
-            >
-                <View>
-                    <View style={styles.headerContainer}>
-                        <GlobalText variant="bold" style={styles.title}>
-                            Criar Missão
-                        </GlobalText>
-                    </View>
-
-                    <View style={styles.formUser}>
-                        <InputText
-                            label="Nome da Missão"
-                            value={task.title}
-                            onChangeText={(text) => setTask({ ...task, title: text })}
-                            icon={"FlagTriangleRight"}
-                        />
-                        <InputText
-                            label="Objetivo"
-                            value={task.description}
-                            onChangeText={(text) => setTask({ ...task, description: text })}
-                            icon={"ScrollText"}
-                        />
-                        <View style={styles.samePlace}>
-                            <View style={styles.inputHalf}>
-                                <InputText
-                                    label="XP"
-                                    type="number"
-                                    keyboardType="numeric"
-                                    value={String(task.xp_reward)}
-                                    onChangeText={(text) => setTask({ ...task, xp_reward: Number(text) })}
-                                    icon={"Stars"}
-                                />
-                            </View>
-                            <View style={styles.inputHalf}>
-                                <InputText
-                                    label="Coin"
-                                    type="number"
-                                    keyboardType="numeric"
-                                    value={String(task.coin_reward)}
-                                    onChangeText={(text) => setTask({ ...task, coin_reward: Number(text) })}
-                                    icon={"CircleStar"}
-                                />
-                            </View>
+                <ScrollView
+                    contentContainerStyle={styles.containerScroll}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <View>
+                        <View style={styles.headerContainer}>
+                            <GlobalText variant="bold" style={styles.title}>
+                                Criar Missão
+                            </GlobalText>
                         </View>
 
-                        <InputDate label={"Data"} icon={"Calendar"} value={task.deadline} onChange={(text) => setTask({ ...task, deadline: text })} />
+                        <View style={styles.formUser}>
+                            <InputText
+                                label="Nome da Missão"
+                                value={task.title}
+                                onChangeText={(text) => setTask({ ...task, title: text })}
+                                icon={"FlagTriangleRight"}
+                            />
+                            <InputText
+                                label="Objetivo"
+                                value={task.description}
+                                onChangeText={(text) => setTask({ ...task, description: text })}
+                                icon={"ScrollText"}
+                            />
+                            <View style={styles.samePlace}>
+                                <View style={styles.inputHalf}>
+                                    <InputText
+                                        label="XP"
+                                        type="number"
+                                        keyboardType="numeric"
+                                        value={String(task.xp_reward)}
+                                        onChangeText={(text) => setTask({ ...task, xp_reward: Number(text) })}
+                                        icon={"Stars"}
+                                    />
+                                </View>
+                                <View style={styles.inputHalf}>
+                                    <InputText
+                                        label="Coin"
+                                        type="number"
+                                        keyboardType="numeric"
+                                        value={String(task.coin_reward)}
+                                        onChangeText={(text) => setTask({ ...task, coin_reward: Number(text) })}
+                                        icon={"CircleStar"}
+                                    />
+                                </View>
+                            </View>
 
-                        {/* <View style={styles.samePlace}>
+                            <InputDate label={"Data"} icon={"Calendar"} value={task.deadline} onChange={(text) => setTask({ ...task, deadline: text })} />
+
+                            {/* <View style={styles.samePlace}>
                             <View style={styles.inputHalf}>
                                 <InputText
                                     label="Hora Inicio"
@@ -152,19 +166,20 @@ export default function RegisterMissionScreen({ journey }: { journey?: JourneyRe
                             </View>
                         </View> */}
 
-                        <View style={styles.containersToggles}>
-                            <InputToggle icon="File" label="Requer" labelBold="Prova" value={task.requires_proof} setValue={(e) => setTask({ ...task, requires_proof: e })} />
-                            <InputToggle icon="Skull" label="É" labelBold="Boss" value={task.type === "boss"} setValue={(isBoss) => setTask({ ...task, type: isBoss ? "boss" : "normal" })} />
+                            <View style={styles.containersToggles}>
+                                <InputToggle icon="File" label="Requer" labelBold="Prova" value={task.requires_proof} setValue={(e) => setTask({ ...task, requires_proof: e })} />
+                                <InputToggle icon="Skull" label="É" labelBold="Boss" value={task.type === "boss"} setValue={(isBoss) => setTask({ ...task, type: isBoss ? "boss" : "normal" })} />
+                            </View>
                         </View>
                     </View>
-                </View>
 
-                <View style={styles.footerContainer}>
-                    <Button color={"secondary"} onPress={handleSubmit}>
-                        Escrever Missão
-                    </Button>
-                </View>
-            </ScrollView>
+                    <View style={styles.footerContainer}>
+                        <Button color={"secondary"} onPress={handleSubmit}>
+                            Escrever Missão
+                        </Button>
+                    </View>
+                </ScrollView>
+            </View>
         </View>
     );
 }
